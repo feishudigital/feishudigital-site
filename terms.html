@@ -3,88 +3,155 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Terms of Service — Feishu Digital</title>
+  <title>Terms of Service &mdash; Feishu Digital</title>
+  <meta name="description" content="Terms of Service for Feishu Digital products. Clear, fair terms for browser extensions and web applications.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="canonical" href="https://feishudigital.de/terms.html">
   <style>
+    @font-face {
+      font-family: 'Instrument Serif';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url('https://fonts.bunny.net/instrument-serif/files/instrument-serif-latin-400-normal.woff2') format('woff2');
+    }
+    :root {
+      --bg: #fafaf8;
+      --text: #0f172a;
+      --text-secondary: #475569;
+      --text-dim: #94a3b8;
+      --border: #e2e0d9;
+      --accent: #0f172a;
+      --serif: 'Instrument Serif', Georgia, serif;
+      --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: var(--sans);
       font-size: 15px;
-      color: #1f2937;
-      background: #f9fafb;
+      color: var(--text);
+      background: var(--bg);
       line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
     }
-    .container {
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 48px 24px;
+    .container { max-width: 640px; margin: 0 auto; padding: 48px 24px 80px; }
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 40px;
+      font-size: 13px;
+      flex-wrap: wrap;
     }
-    h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
-    .subtitle { font-size: 14px; color: #6b7280; margin-bottom: 32px; }
-    h2 { font-size: 17px; font-weight: 600; margin-top: 28px; margin-bottom: 8px; }
-    p { margin-bottom: 12px; }
-    ul { margin: 0 0 12px 24px; }
-    li { margin-bottom: 4px; }
-    strong { font-weight: 600; }
-    a { color: #2563eb; }
-    .highlight {
-      background: #ecfdf5;
-      border-left: 3px solid #22c55e;
-      padding: 12px 16px;
-      border-radius: 0 8px 8px 0;
-      margin: 16px 0;
+    .nav a {
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav a:hover { color: var(--text); }
+    .nav a.active { color: var(--text); font-weight: 600; }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
       font-size: 14px;
+      color: var(--text);
+      margin-right: auto;
     }
-    .warning {
-      background: #fef3c7;
-      border-left: 3px solid #f59e0b;
-      padding: 12px 16px;
-      border-radius: 0 8px 8px 0;
-      margin: 16px 0;
-      font-size: 14px;
-    }
-    .footer {
-      margin-top: 40px;
-      padding-top: 16px;
-      border-top: 1px solid #e5e7eb;
+    .nav-logo {
+      width: 24px; height: 24px;
+      background: var(--accent);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-family: var(--serif);
       font-size: 12px;
-      color: #9ca3af;
+      font-style: italic;
     }
-    .nav { margin-bottom: 24px; font-size: 13px; }
-    .nav a { margin-right: 16px; text-decoration: none; }
-    .nav a:hover { text-decoration: underline; }
+    h1 {
+      font-family: var(--serif);
+      font-size: 28px;
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
+    .subtitle { font-size: 14px; color: var(--text-dim); margin-bottom: 36px; }
+    h2 { font-size: 16px; font-weight: 600; margin-top: 32px; margin-bottom: 8px; }
+    p { margin-bottom: 12px; color: var(--text-secondary); }
+    ul { margin: 0 0 12px 20px; color: var(--text-secondary); }
+    li { margin-bottom: 4px; }
+    strong { font-weight: 600; color: var(--text); }
+    a { color: var(--accent); }
+    .callout {
+      background: #f0fdf4;
+      border-left: 3px solid #22c55e;
+      padding: 14px 18px;
+      border-radius: 0 10px 10px 0;
+      margin: 20px 0;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    .callout-warn {
+      background: #fffbeb;
+      border-left: 3px solid #f59e0b;
+      padding: 14px 18px;
+      border-radius: 0 10px 10px 0;
+      margin: 20px 0;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    .footer-line {
+      margin-top: 48px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-dim);
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="nav">
-      <a href="index.html">Home</a>
+    <nav class="nav">
+      <a href="/" class="nav-brand"><span class="nav-logo"><i>fd</i></span> Feishu Digital</a>
       <a href="privacy.html">Privacy</a>
-      <a href="terms.html"><strong>Terms</strong></a>
-      <a href="refund.html">Refund Policy</a>
+      <a href="terms.html" class="active">Terms</a>
+      <a href="refund.html">Refund</a>
       <a href="impressum.html">Impressum</a>
-    </div>
+    </nav>
 
     <h1>Terms of Service</h1>
-    <p class="subtitle">Feishu Digital &mdash; Last updated: February 13, 2026</p>
+    <p class="subtitle">Last updated: February 23, 2026</p>
 
-    <div class="highlight">
+    <div class="callout">
       By using any Feishu Digital product, you agree to these terms. If you do not agree, please stop using our products.
     </div>
 
     <h2>1. Provider</h2>
     <p>
       Kevin Lin / Feishu Digital<br>
-      Email: <a href="mailto:feishudigital@gmail.com">feishudigital@gmail.com</a><br>
-      Full address: see <a href="impressum.html">Impressum</a>
+      Email: <strong><a href="mailto:feishudigital@gmail.com">feishudigital@gmail.com</a></strong><br>
+      Full address: see <a href="impressum.html">Impressum</a>.
     </p>
 
     <h2>2. Products and services</h2>
-    <p>Feishu Digital offers browser extensions and web applications. Each product has a free tier and optional paid plans. Current pricing is displayed on the respective product page. We reserve the right to change pricing with 30 days notice.</p>
+    <p>
+      Feishu Digital offers browser extensions and web applications. Some products are
+      entirely free; others offer optional paid plans. Current pricing is displayed on
+      the respective product page. We reserve the right to change pricing with 30 days notice.
+    </p>
 
     <h2>3. Payments and billing</h2>
-    <p>Payments are processed by <strong>Lemon Squeezy</strong> (Lemon Squeezy, LLC), who acts as Merchant of Record. Lemon Squeezy handles all billing, taxes, VAT, invoicing, and refund processing. By subscribing, you also agree to <a href="https://www.lemonsqueezy.com/terms" target="_blank">Lemon Squeezy's Terms of Service</a>.</p>
+    <p>
+      Payments are processed by <strong>Lemon Squeezy</strong> (Lemon Squeezy, LLC), who acts
+      as Merchant of Record. Lemon Squeezy handles all billing, taxes, VAT, invoicing, and
+      refund processing. By purchasing, you also agree to
+      <a href="https://www.lemonsqueezy.com/terms" target="_blank" rel="noopener">Lemon Squeezy&rsquo;s Terms of Service</a>.
+    </p>
     <ul>
       <li>Subscriptions are billed monthly and renew automatically</li>
+      <li>One-time purchases grant a perpetual license for the purchased version</li>
       <li>All prices are shown inclusive of applicable taxes</li>
     </ul>
 
@@ -92,19 +159,39 @@
     <p>You can cancel your subscription at any time:</p>
     <ul>
       <li>Via your Lemon Squeezy customer portal (link in your purchase confirmation email)</li>
-      <li>By emailing us at feishudigital@gmail.com</li>
+      <li>By emailing us at <strong>feishudigital@gmail.com</strong></li>
     </ul>
-    <p>After cancellation, you retain access to Pro features until the end of your current billing period. No further charges will be made.</p>
+    <p>
+      After cancellation, you retain access to Pro features until the end of your current
+      billing period. No further charges will be made.
+    </p>
 
     <h2>5. Right of withdrawal (Widerrufsrecht)</h2>
-    <div class="warning">
-      <strong>Widerrufsbelehrung:</strong> As a consumer in the EU, you have the right to withdraw from the purchase within 14 days without giving a reason.
+    <div class="callout-warn">
+      <strong>Widerrufsbelehrung:</strong> As a consumer in the EU, you have the right to
+      withdraw from the purchase within 14 days without giving a reason.
     </div>
-    <p>The withdrawal period is 14 days from the date of purchase. To exercise your right of withdrawal, contact us at <strong>feishudigital@gmail.com</strong> with a clear statement of your decision.</p>
-    <p><strong>Early expiration:</strong> For browser extensions, by activating your license key you expressly consent to the immediate provision of digital content and acknowledge that you thereby lose your right of withdrawal (Art. 16(m) Directive 2011/83/EU, &sect; 356(5) BGB). If you do not activate your license key, the 14-day withdrawal period applies in full.</p>
+    <p>
+      The withdrawal period is 14 days from the date of purchase. To exercise your right of
+      withdrawal, contact us at <strong>feishudigital@gmail.com</strong> with a clear statement
+      of your decision.
+    </p>
+    <p>
+      <strong>Early expiration:</strong> For browser extensions, by activating your license key
+      you expressly consent to the immediate provision of digital content and acknowledge that
+      you thereby lose your right of withdrawal (Art. 16(m) Directive 2011/83/EU, &sect; 356(5) BGB).
+      If you do not activate your license key, the 14-day withdrawal period applies in full.
+    </p>
     <p>See our <a href="refund.html">Refund Policy</a> for full details.</p>
 
-    <h2>6. Acceptable use</h2>
+    <h2>6. Free products</h2>
+    <p>
+      Some of our products (such as web-based tools) are provided entirely free of charge.
+      These tools are offered &ldquo;as is&rdquo; without any service-level guarantees.
+      We may modify, suspend, or discontinue free products at any time.
+    </p>
+
+    <h2>7. Acceptable use</h2>
     <p>You agree not to:</p>
     <ul>
       <li>Attempt to reverse-engineer, decompile, modify, or redistribute our products</li>
@@ -113,30 +200,50 @@
       <li>Use our products for any illegal purpose</li>
     </ul>
 
-    <h2>7. Intellectual property</h2>
-    <p>All Feishu Digital products, including code, design, and content, are the intellectual property of Kevin Lin / Feishu Digital. Your subscription grants you a personal, non-transferable, non-exclusive license to use the product.</p>
+    <h2>8. Intellectual property</h2>
+    <p>
+      All Feishu Digital products, including code, design, and content, are the intellectual
+      property of Kevin Lin / Feishu Digital. Your purchase grants you a personal,
+      non-transferable, non-exclusive license to use the product.
+    </p>
 
-    <h2>8. Limitation of liability</h2>
-    <p>Our products are provided "as is" without warranties of any kind, express or implied. To the maximum extent permitted by applicable law:</p>
+    <h2>9. Limitation of liability</h2>
+    <p>
+      Our products are provided &ldquo;as is&rdquo; without warranties of any kind, express
+      or implied. To the maximum extent permitted by applicable law:
+    </p>
     <ul>
       <li>We are not liable for indirect, incidental, special, or consequential damages</li>
       <li>Our total liability is limited to the amount you paid in the 12 months preceding the claim</li>
     </ul>
-    <p>These limitations do not apply to liability for intentional misconduct or gross negligence, or any liability that cannot be excluded under applicable law (including mandatory EU consumer protection rights).</p>
+    <p>
+      These limitations do not apply to liability for intentional misconduct or gross negligence,
+      or any liability that cannot be excluded under applicable law (including mandatory EU
+      consumer protection rights).
+    </p>
 
-    <h2>9. Changes to these terms</h2>
-    <p>We may update these terms from time to time. Material changes will be communicated via email or product update notes. Continued use after notification constitutes acceptance.</p>
+    <h2>10. Changes to these terms</h2>
+    <p>
+      We may update these terms from time to time. Material changes will be communicated
+      via email or product update. Continued use after notification constitutes acceptance.
+    </p>
 
-    <h2>10. Governing law</h2>
-    <p>These terms are governed by the laws of the Federal Republic of Germany. If you are a consumer in the EU, you additionally benefit from mandatory consumer protection provisions of your country of residence. Place of jurisdiction is Hamburg, Germany, unless mandatory consumer protection laws provide otherwise.</p>
+    <h2>11. Governing law</h2>
+    <p>
+      These terms are governed by the laws of the Federal Republic of Germany. If you are a
+      consumer in the EU, you additionally benefit from mandatory consumer protection provisions
+      of your country of residence. Place of jurisdiction is Hamburg, Germany, unless mandatory
+      consumer protection laws provide otherwise.
+    </p>
 
-    <h2>11. Contact</h2>
-    <p>Questions? Contact us at:<br>
-    <strong>feishudigital@gmail.com</strong></p>
+    <h2>12. Contact</h2>
+    <p>
+      Questions about these terms? Contact us at
+      <strong><a href="mailto:feishudigital@gmail.com">feishudigital@gmail.com</a></strong>.<br>
+      Full contact details: see <a href="impressum.html">Impressum</a>.
+    </p>
 
-    <div class="footer">
-      Feishu Digital
-    </div>
+    <div class="footer-line">Feishu Digital</div>
   </div>
 </body>
 </html>

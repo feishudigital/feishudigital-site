@@ -3,51 +3,111 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Impressum — Feishu Digital</title>
+  <title>Impressum &mdash; Feishu Digital</title>
+  <meta name="description" content="Impressum der Feishu Digital, Hamburg. Angaben gem. § 5 DDG.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="canonical" href="https://feishudigital.de/impressum.html">
   <style>
+    @font-face {
+      font-family: 'Instrument Serif';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url('https://fonts.bunny.net/instrument-serif/files/instrument-serif-latin-400-normal.woff2') format('woff2');
+    }
+    :root {
+      --bg: #fafaf8;
+      --text: #0f172a;
+      --text-secondary: #475569;
+      --text-dim: #94a3b8;
+      --border: #e2e0d9;
+      --accent: #0f172a;
+      --serif: 'Instrument Serif', Georgia, serif;
+      --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: var(--sans);
       font-size: 15px;
-      color: #1f2937;
-      background: #f9fafb;
+      color: var(--text);
+      background: var(--bg);
       line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
     }
-    .container {
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 48px 24px;
+    .container { max-width: 640px; margin: 0 auto; padding: 48px 24px 80px; }
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 40px;
+      font-size: 13px;
+      flex-wrap: wrap;
     }
-    h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
-    .subtitle { font-size: 14px; color: #6b7280; margin-bottom: 32px; }
-    h2 { font-size: 17px; font-weight: 600; margin-top: 28px; margin-bottom: 8px; }
-    p { margin-bottom: 12px; }
-    strong { font-weight: 600; }
-    a { color: #2563eb; }
-    .footer {
-      margin-top: 40px;
-      padding-top: 16px;
-      border-top: 1px solid #e5e7eb;
+    .nav a {
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav a:hover { color: var(--text); }
+    .nav a.active { color: var(--text); font-weight: 600; }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--text);
+      margin-right: auto;
+    }
+    .nav-logo {
+      width: 24px; height: 24px;
+      background: var(--accent);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-family: var(--serif);
       font-size: 12px;
-      color: #9ca3af;
+      font-style: italic;
     }
-    .nav { margin-bottom: 24px; font-size: 13px; }
-    .nav a { margin-right: 16px; text-decoration: none; }
-    .nav a:hover { text-decoration: underline; }
+    h1 {
+      font-family: var(--serif);
+      font-size: 28px;
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
+    .subtitle { font-size: 14px; color: var(--text-dim); margin-bottom: 36px; }
+    h2 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-top: 32px;
+      margin-bottom: 8px;
+    }
+    p { margin-bottom: 12px; color: var(--text-secondary); }
+    strong { font-weight: 600; color: var(--text); }
+    a { color: var(--accent); }
+    .footer-line {
+      margin-top: 48px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-dim);
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="nav">
-      <a href="index.html">Home</a>
+    <nav class="nav">
+      <a href="/" class="nav-brand"><span class="nav-logo"><i>fd</i></span> Feishu Digital</a>
       <a href="privacy.html">Privacy</a>
       <a href="terms.html">Terms</a>
-      <a href="refund.html">Refund Policy</a>
-      <a href="impressum.html"><strong>Impressum</strong></a>
-    </div>
+      <a href="refund.html">Refund</a>
+      <a href="impressum.html" class="active">Impressum</a>
+    </nav>
 
     <h1>Impressum</h1>
-    <p class="subtitle">Angaben gem. &sect; 5 DDG (Digitale-Dienste-Gesetz)</p>
+    <p class="subtitle">Angaben gem&auml;&szlig; &sect; 5 DDG (Digitale-Dienste-Gesetz)</p>
 
     <h2>Diensteanbieter</h2>
     <p>
@@ -58,33 +118,37 @@
     </p>
 
     <h2>Kontakt</h2>
-    <p>
-      E-Mail: <strong>feishudigital@gmail.com</strong>
-    </p>
+    <p>E-Mail: <strong>feishudigital@gmail.com</strong></p>
 
     <h2>Umsatzsteuer-Identifikationsnummer</h2>
-    <p>
-      USt-IdNr. gem. &sect; 27a UStG: <strong>wird nachgereicht</strong>
-    </p>
+    <p>USt-IdNr. gem. &sect; 27a UStG: <strong>wird nachgereicht</strong></p>
 
     <h2>Verantwortlich f&uuml;r den Inhalt gem. &sect; 18 Abs. 2 MStV</h2>
-    <p>
-      Kevin Lin<br>
-      Grootsruhe 3<br>
-      20537 Hamburg
-    </p>
+    <p>Kevin Lin<br>Grootsruhe 3, 20537 Hamburg</p>
 
     <h2>EU-Streitschlichtung</h2>
-    <p>Die Europ&auml;ische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr/" target="_blank">https://ec.europa.eu/consumers/odr/</a></p>
-    <p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+    <p>
+      Die Europ&auml;ische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS)
+      bereit: <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener">https://ec.europa.eu/consumers/odr/</a>
+    </p>
+    <p>
+      Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer
+      Verbraucherschlichtungsstelle teilzunehmen.
+    </p>
 
     <h2>Haftungsausschluss</h2>
-    <p><strong>Haftung f&uuml;r Inhalte:</strong> Die Inhalte unserer Seiten wurden mit gr&ouml;&szlig;ter Sorgfalt erstellt. F&uuml;r die Richtigkeit, Vollst&auml;ndigkeit und Aktualit&auml;t der Inhalte k&ouml;nnen wir jedoch keine Gew&auml;hr &uuml;bernehmen.</p>
-    <p><strong>Haftung f&uuml;r Links:</strong> Unser Angebot enth&auml;lt Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. F&uuml;r die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.</p>
+    <p>
+      <strong>Haftung f&uuml;r Inhalte:</strong> Die Inhalte unserer Seiten wurden mit
+      gr&ouml;&szlig;ter Sorgfalt erstellt. F&uuml;r die Richtigkeit, Vollst&auml;ndigkeit
+      und Aktualit&auml;t der Inhalte k&ouml;nnen wir jedoch keine Gew&auml;hr &uuml;bernehmen.
+    </p>
+    <p>
+      <strong>Haftung f&uuml;r Links:</strong> Unser Angebot enth&auml;lt Links zu externen
+      Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. F&uuml;r die Inhalte der
+      verlinkten Seiten ist stets der jeweilige Anbieter verantwortlich.
+    </p>
 
-    <div class="footer">
-      Feishu Digital &mdash; Kevin Lin, Hamburg
-    </div>
+    <div class="footer-line">Feishu Digital &mdash; Kevin Lin, Hamburg</div>
   </div>
 </body>
 </html>

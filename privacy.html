@@ -3,103 +3,185 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacy Policy — Feishu Digital</title>
+  <title>Privacy Policy &mdash; Feishu Digital</title>
+  <meta name="description" content="Privacy Policy for Feishu Digital products. We believe in minimal data collection.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="canonical" href="https://feishudigital.de/privacy.html">
   <style>
+    @font-face {
+      font-family: 'Instrument Serif';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url('https://fonts.bunny.net/instrument-serif/files/instrument-serif-latin-400-normal.woff2') format('woff2');
+    }
+    :root {
+      --bg: #fafaf8;
+      --text: #0f172a;
+      --text-secondary: #475569;
+      --text-dim: #94a3b8;
+      --border: #e2e0d9;
+      --accent: #0f172a;
+      --serif: 'Instrument Serif', Georgia, serif;
+      --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: var(--sans);
       font-size: 15px;
-      color: #1f2937;
-      background: #f9fafb;
+      color: var(--text);
+      background: var(--bg);
       line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
     }
-    .container {
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 48px 24px;
+    .container { max-width: 640px; margin: 0 auto; padding: 48px 24px 80px; }
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 40px;
+      font-size: 13px;
+      flex-wrap: wrap;
     }
-    h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
-    .subtitle { font-size: 14px; color: #6b7280; margin-bottom: 32px; }
-    h2 { font-size: 17px; font-weight: 600; margin-top: 28px; margin-bottom: 8px; }
-    p { margin-bottom: 12px; }
-    ul { margin: 0 0 12px 24px; }
-    li { margin-bottom: 4px; }
-    strong { font-weight: 600; }
-    a { color: #2563eb; }
-    .highlight {
-      background: #ecfdf5;
-      border-left: 3px solid #22c55e;
-      padding: 12px 16px;
-      border-radius: 0 8px 8px 0;
-      margin: 16px 0;
+    .nav a {
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav a:hover { color: var(--text); }
+    .nav a.active { color: var(--text); font-weight: 600; }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
       font-size: 14px;
+      color: var(--text);
+      margin-right: auto;
     }
-    .footer {
-      margin-top: 40px;
-      padding-top: 16px;
-      border-top: 1px solid #e5e7eb;
+    .nav-logo {
+      width: 24px; height: 24px;
+      background: var(--accent);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-family: var(--serif);
       font-size: 12px;
-      color: #9ca3af;
+      font-style: italic;
     }
-    .nav { margin-bottom: 24px; font-size: 13px; }
-    .nav a { margin-right: 16px; text-decoration: none; }
-    .nav a:hover { text-decoration: underline; }
+    h1 {
+      font-family: var(--serif);
+      font-size: 28px;
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
+    .subtitle { font-size: 14px; color: var(--text-dim); margin-bottom: 36px; }
+    h2 { font-size: 16px; font-weight: 600; margin-top: 32px; margin-bottom: 8px; }
+    p { margin-bottom: 12px; color: var(--text-secondary); }
+    ul { margin: 0 0 12px 20px; color: var(--text-secondary); }
+    li { margin-bottom: 4px; }
+    strong { font-weight: 600; color: var(--text); }
+    a { color: var(--accent); }
+    .callout {
+      background: #f0fdf4;
+      border-left: 3px solid #22c55e;
+      padding: 14px 18px;
+      border-radius: 0 10px 10px 0;
+      margin: 20px 0;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    .footer-line {
+      margin-top: 48px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-dim);
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="nav">
-      <a href="index.html">Home</a>
-      <a href="privacy.html"><strong>Privacy</strong></a>
+    <nav class="nav">
+      <a href="/" class="nav-brand"><span class="nav-logo"><i>fd</i></span> Feishu Digital</a>
+      <a href="privacy.html" class="active">Privacy</a>
       <a href="terms.html">Terms</a>
-      <a href="refund.html">Refund Policy</a>
+      <a href="refund.html">Refund</a>
       <a href="impressum.html">Impressum</a>
-    </div>
+    </nav>
 
     <h1>Privacy Policy</h1>
-    <p class="subtitle">Feishu Digital &mdash; Last updated: February 13, 2026</p>
+    <p class="subtitle">Last updated: February 23, 2026</p>
 
-    <div class="highlight">
-      We believe in minimal data collection. Our browser extensions process data locally in your browser. We do not run analytics, do not track users, and do not sell data.
+    <div class="callout">
+      We believe in minimal data collection. Our browser extensions process data locally
+      in your browser. We do not run analytics, do not track users, and do not sell data.
     </div>
 
     <h2>1. Who we are</h2>
-    <p>Feishu Digital is operated by Kevin Lin, Grootsruhe 3, 20537 Hamburg, Germany. Email: <strong>feishudigital@gmail.com</strong>.</p>
+    <p>
+      Feishu Digital is operated by Kevin Lin, Grootsruhe 3, 20537 Hamburg, Germany.
+      Email: <strong>feishudigital@gmail.com</strong>.
+    </p>
 
     <h2>2. Our products</h2>
-    <p>Feishu Digital builds browser extensions and web applications:</p>
+    <p>Feishu Digital builds browser extensions and web applications, including:</p>
     <ul>
-      <li><strong>Readability Scorer</strong> &mdash; Chrome Extension for real-time readability analysis</li>
-      <li><strong>BayScout</strong> &mdash; Chrome Extension for eBay seller tools</li>
-      <li><strong>AI Chat Organizer</strong> &mdash; Chrome Extension for organizing AI chat conversations</li>
-      <li><strong>Rechnungsfluss</strong> &mdash; Web application for German e-invoicing (XRechnung)</li>
+      <li><strong>Arztrechnung Pr&uuml;fer</strong> &mdash; Free web app for checking medical bills (GO&Auml;/GOZ)</li>
+      <li><strong>JVEG Rechner</strong> &mdash; Web app for JVEG compensation claims</li>
+      <li><strong>Readability Scorer</strong> &mdash; Chrome Extension for readability analysis</li>
+      <li><strong>AI Chat Organizer</strong> &mdash; Chrome Extension for organizing AI conversations</li>
     </ul>
+    <p>This list may change as we add or discontinue products.</p>
 
     <h2>3. Data we collect</h2>
-    <p><strong>Browser Extensions (Readability Scorer, BayScout, AI Chat Organizer):</strong></p>
+    <p><strong>Browser Extensions (Readability Scorer, AI Chat Organizer):</strong></p>
     <ul>
       <li>All text analysis and data processing happens locally in your browser</li>
-      <li>We do not transmit, store, or have access to your text content</li>
-      <li>Settings and preferences are stored locally using the browser's storage API</li>
+      <li>We do not transmit, store, or have access to your content</li>
+      <li>Settings and preferences are stored locally using the browser&rsquo;s storage API</li>
       <li>License key validation (Pro users) sends only the license key to the Lemon Squeezy API &mdash; no user content</li>
     </ul>
-    <p><strong>Web Applications (Rechnungsfluss):</strong></p>
+    <p><strong>Static Web Apps (Arztrechnung Pr&uuml;fer):</strong></p>
+    <ul>
+      <li>All calculations and data processing happen entirely in your browser (client-side)</li>
+      <li>No data is transmitted to any server</li>
+      <li>Uploaded files (PDFs, images) are processed locally and never stored or sent</li>
+    </ul>
+    <p><strong>Web Apps with Accounts (JVEG Rechner):</strong></p>
     <ul>
       <li>Account data (email, name) for authentication</li>
-      <li>Invoice data you enter for processing (stored encrypted in the EU)</li>
+      <li>Application data you enter (stored encrypted in the EU)</li>
       <li>No data is shared with third parties except for payment processing (Lemon Squeezy/Stripe)</li>
     </ul>
     <p><strong>This Website (feishudigital.de):</strong></p>
     <ul>
-      <li>This website is a static site hosted on GitHub Pages</li>
-      <li>We do not use cookies, analytics, tracking pixels, or any third-party scripts</li>
-      <li>GitHub Pages may collect basic server logs (IP address, browser type) &mdash; see <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages#data-collection" target="_blank">GitHub Pages privacy</a></li>
+      <li>Static site hosted on GitHub Pages</li>
+      <li>We do not use cookies, analytics, tracking pixels, or third-party scripts</li>
+      <li>GitHub Pages may collect basic server logs (IP address, browser type) &mdash; see <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages#data-collection" target="_blank" rel="noopener">GitHub Pages privacy</a></li>
     </ul>
 
     <h2>4. Payment processing</h2>
-    <p>Payments are processed by <strong>Lemon Squeezy</strong> (Lemon Squeezy, LLC), who acts as Merchant of Record. Lemon Squeezy handles billing, taxes, VAT, and invoicing. We do not store credit card numbers or payment details. See <a href="https://www.lemonsqueezy.com/privacy" target="_blank">Lemon Squeezy's Privacy Policy</a>.</p>
+    <p>
+      Payments are processed by <strong>Lemon Squeezy</strong> (Lemon Squeezy, LLC), who acts
+      as Merchant of Record. Lemon Squeezy handles billing, taxes, VAT, and invoicing. We do
+      not store credit card numbers or payment details. See
+      <a href="https://www.lemonsqueezy.com/privacy" target="_blank" rel="noopener">Lemon Squeezy&rsquo;s Privacy Policy</a>.
+    </p>
 
-    <h2>5. Your rights (GDPR/DSGVO)</h2>
+    <h2>5. Third-party services</h2>
+    <ul>
+      <li><strong>Lemon Squeezy</strong> &mdash; Payment processing and license management</li>
+      <li><strong>Supabase</strong> &mdash; Database and authentication for web apps (EU servers, Frankfurt)</li>
+      <li><strong>GitHub Pages</strong> &mdash; Static website hosting</li>
+      <li><strong>Cloudflare Pages</strong> &mdash; Static web app hosting</li>
+      <li><strong>Fly.io</strong> &mdash; Web application hosting (Frankfurt, Germany)</li>
+      <li><strong>Bunny Fonts</strong> &mdash; GDPR-compliant font delivery (no Google Fonts)</li>
+    </ul>
+
+    <h2>6. Your rights (GDPR/DSGVO)</h2>
     <p>As an EU resident, you have the right to:</p>
     <ul>
       <li>Access your personal data</li>
@@ -111,27 +193,28 @@
     </ul>
     <p>To exercise any of these rights, email us at <strong>feishudigital@gmail.com</strong>.</p>
 
-    <h2>6. Data storage and security</h2>
-    <p>Browser extension data is stored locally on your device and never transmitted. Web application data is stored on EU-based servers (Supabase, hosted in Frankfurt, Germany). We use encryption in transit (HTTPS/TLS) and at rest where applicable.</p>
-
-    <h2>7. Third-party services</h2>
-    <ul>
-      <li><strong>Lemon Squeezy</strong> &mdash; Payment processing and license management</li>
-      <li><strong>Supabase</strong> &mdash; Database and authentication for web applications (EU servers)</li>
-      <li><strong>GitHub Pages</strong> &mdash; Static website hosting</li>
-      <li><strong>Fly.io</strong> &mdash; Web application hosting (Frankfurt, Germany)</li>
-    </ul>
+    <h2>7. Data storage and security</h2>
+    <p>
+      Browser extension data is stored locally on your device and never transmitted.
+      Web application data is stored on EU-based servers (Supabase, hosted in Frankfurt, Germany).
+      We use encryption in transit (HTTPS/TLS) and at rest where applicable.
+    </p>
 
     <h2>8. Changes to this policy</h2>
-    <p>We may update this policy from time to time. Changes will be reflected on this page with an updated date. For material changes, we will notify affected users via email or product update.</p>
+    <p>
+      We may update this policy from time to time. Changes will be reflected on this page
+      with an updated date. For material changes, we will notify affected users via email
+      or product update.
+    </p>
 
     <h2>9. Contact</h2>
-    <p>Questions about privacy? Contact us at <strong><a href="mailto:feishudigital@gmail.com">feishudigital@gmail.com</a></strong>.<br>
-    Full contact details: see <a href="impressum.html">Impressum</a>.</p>
+    <p>
+      Questions about privacy? Contact us at
+      <strong><a href="mailto:feishudigital@gmail.com">feishudigital@gmail.com</a></strong>.<br>
+      Full contact details: see <a href="impressum.html">Impressum</a>.
+    </p>
 
-    <div class="footer">
-      Feishu Digital
-    </div>
+    <div class="footer-line">Feishu Digital</div>
   </div>
 </body>
 </html>
