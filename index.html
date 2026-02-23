@@ -117,13 +117,18 @@
       opacity: 0;
       animation: enter 0.7s ease 0.1s forwards;
     }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 64px;
+      align-items: end;
+    }
     .hero h1 {
       font-family: var(--serif);
       font-size: clamp(36px, 5.5vw, 54px);
       font-weight: 600;
       line-height: 1.18;
       letter-spacing: -0.025em;
-      max-width: 620px;
     }
     .hero h1 .dot {
       color: var(--accent);
@@ -135,21 +140,28 @@
       color: var(--mid);
       max-width: 460px;
     }
-    .hero-location {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 32px;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--light);
-      letter-spacing: 0.04em;
+    .hero-aside {
+      border-left: 1px solid var(--line);
+      padding-left: 32px;
     }
-    .hero-location::before {
-      content: '';
-      width: 32px;
-      height: 1px;
-      background: var(--line);
+    .hero-fact {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .hero-fact:first-child {
+      border-top: 1px solid var(--line);
+    }
+    .hero-fact-label {
+      font-size: 12px;
+      color: var(--light);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 2px;
+    }
+    .hero-fact-value {
+      font-family: var(--serif);
+      font-size: 17px;
+      font-weight: 600;
     }
 
     /* ═══ Products ═══ */
@@ -166,6 +178,18 @@
       text-transform: uppercase;
       letter-spacing: 0.1em;
       margin-bottom: 40px;
+    }
+    .product-group-label {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 0;
+      margin-top: 40px;
+    }
+    .product-group-label:first-of-type {
+      margin-top: 0;
     }
 
     .product {
@@ -251,44 +275,16 @@
       margin-top: 4px;
     }
 
-    /* ═══ Divider ═══ */
-    .divider {
-      padding: 72px 0;
-      background: var(--bg-warm);
-      text-align: center;
-      position: relative;
-    }
-    .divider::before,
-    .divider::after {
-      content: '';
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 40px;
-      height: 1px;
-      background: var(--line);
-    }
-    .divider::before { top: 0; }
-    .divider::after { bottom: 0; }
-    .divider p {
-      font-family: var(--serif);
-      font-size: 22px;
-      font-weight: 400;
-      font-style: italic;
-      line-height: 1.55;
-      color: var(--mid);
-      max-width: 500px;
-      margin: 0 auto;
-    }
-
     /* ═══ About ═══ */
     .about {
       padding: 80px 0 88px;
+      border-top: 1px solid var(--line);
     }
-    .about-cols {
+    .about-intro {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 80px;
+      gap: 40px;
+      margin-bottom: 48px;
     }
     .about h2 {
       font-family: var(--serif);
@@ -296,13 +292,17 @@
       font-weight: 600;
       line-height: 1.3;
       letter-spacing: -0.015em;
-      margin-bottom: 20px;
     }
-    .about p {
+    .about-text {
       font-size: 15px;
       color: var(--mid);
       line-height: 1.75;
-      margin-bottom: 14px;
+      align-self: end;
+    }
+    .values-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 64px;
     }
 
     .values {
@@ -380,6 +380,8 @@
     @media (max-width: 700px) {
       .w { padding: 0 24px; }
       .hero { padding: 56px 0 64px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 36px; }
+      .hero-aside { border-left: none; padding-left: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
       .hero-sub { font-size: 16px; }
       .product {
         grid-template-columns: 1fr;
@@ -394,11 +396,8 @@
         align-items: center;
       }
       .arrow { display: none; }
-      .about-cols {
-        grid-template-columns: 1fr;
-        gap: 48px;
-      }
-      .divider p { font-size: 19px; }
+      .about-intro { grid-template-columns: 1fr; gap: 16px; }
+      .values-grid { grid-template-columns: 1fr; }
       .nav-links { gap: 20px; font-size: 13px; }
       .footer-row {
         flex-direction: column;
@@ -425,12 +424,29 @@
 
   <section class="hero">
     <div class="w">
-      <h1>Focused software for professionals<span class="dot">.</span></h1>
-      <p class="hero-sub">
-        Browser extensions and web applications that solve specific problems.
-        No bloat, no tracking. Built and hosted in the EU.
-      </p>
-      <div class="hero-location">Hamburg, Germany</div>
+      <div class="hero-grid">
+        <div>
+          <h1>Focused software for professionals<span class="dot">.</span></h1>
+          <p class="hero-sub">
+            Browser extensions and web applications that solve specific problems.
+            No bloat, no tracking. Built and hosted in the EU.
+          </p>
+        </div>
+        <div class="hero-aside">
+          <div class="hero-fact">
+            <div class="hero-fact-label">Based in</div>
+            <div class="hero-fact-value">Hamburg, Germany</div>
+          </div>
+          <div class="hero-fact">
+            <div class="hero-fact-label">Products</div>
+            <div class="hero-fact-value">4 active tools</div>
+          </div>
+          <div class="hero-fact">
+            <div class="hero-fact-label">Hosting</div>
+            <div class="hero-fact-value">EU servers only</div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -438,6 +454,7 @@
     <div class="w">
       <div class="section-label">Products</div>
 
+      <div class="product-group-label">Web Apps</div>
       <a class="product" href="https://arztrechnung.feishudigital.de" target="_blank" rel="noopener">
         <div>
           <div class="product-name">Arztrechnung Pr&uuml;fer</div>
@@ -468,6 +485,7 @@
         </div>
       </a>
 
+      <div class="product-group-label">Chrome Extensions</div>
       <a class="product" href="https://chromewebstore.google.com/detail/readability-scorer/cnpnapjocbjcjpmmbodjajihofochnhc" target="_blank" rel="noopener">
         <div>
           <div class="product-name">Readability Scorer</div>
@@ -500,27 +518,16 @@
     </div>
   </section>
 
-  <section class="divider">
-    <div class="w">
-      <p>We build each product to solve one problem well &mdash; then get out of your way.</p>
-    </div>
-  </section>
-
   <section class="about" id="about">
     <div class="w">
-      <div class="about-cols">
-        <div>
-          <h2>Independent software studio, Hamburg.</h2>
-          <p>
-            Feishu Digital builds tools that help professionals work more
-            efficiently. No feature bloat, no dark patterns, no unnecessary
-            data collection.
-          </p>
-          <p>
-            Every product has a free tier. We fund development through
-            optional Pro upgrades.
-          </p>
-        </div>
+      <div class="about-intro">
+        <h2>Independent software studio, Hamburg.</h2>
+        <p class="about-text">
+          Each product solves a specific problem. No feature bloat, no dark patterns,
+          no unnecessary data collection. Every product has a free tier.
+        </p>
+      </div>
+      <div class="values-grid">
         <ul class="values">
           <li>
             <strong>Local-first processing</strong>
@@ -530,6 +537,8 @@
             <strong>EU-hosted, GDPR compliant</strong>
             Web app data stored in Frankfurt, Germany. Encrypted in transit and at rest.
           </li>
+        </ul>
+        <ul class="values">
           <li>
             <strong>No tracking</strong>
             No analytics, no pixels, no third-party tracking. We don&rsquo;t sell data.
