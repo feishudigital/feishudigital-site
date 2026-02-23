@@ -3,22 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Feishu Digital — Privacy-First Software from Hamburg</title>
-  <meta name="description" content="Feishu Digital builds privacy-first browser extensions and web tools for professionals. Based in Hamburg, Germany. DSGVO/GDPR compliant.">
-  <meta name="keywords" content="Feishu Digital, browser extensions, privacy tools, JVEG Rechner, Arztrechnung, Readability Scorer, Hamburg">
+  <title>Feishu Digital — Software from Hamburg</title>
+  <meta name="description" content="Feishu Digital builds browser extensions and web tools for professionals. Based in Hamburg, Germany.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="canonical" href="https://feishudigital.de/">
-  <meta property="og:title" content="Feishu Digital — Privacy-First Software from Hamburg">
-  <meta property="og:description" content="Browser extensions and web tools for professionals. Privacy-first, no bloat, built in Hamburg.">
+  <meta property="og:title" content="Feishu Digital — Software from Hamburg">
+  <meta property="og:description" content="Browser extensions and web tools for professionals. Based in Hamburg.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://feishudigital.de/">
+  <link rel="stylesheet" href="https://fonts.bunny.net/css?family=source-serif-4:400,400i,600|outfit:400,500">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Feishu Digital",
     "url": "https://feishudigital.de",
-    "description": "Privacy-first browser extensions and web tools for professionals",
+    "description": "Browser extensions and web tools for professionals",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Grootsruhe 3",
@@ -34,480 +34,527 @@
   }
   </script>
   <style>
-    @font-face {
-      font-family: 'Instrument Serif';
-      font-style: normal;
-      font-weight: 400;
-      font-display: swap;
-      src: url('https://fonts.bunny.net/instrument-serif/files/instrument-serif-latin-400-normal.woff2') format('woff2');
-      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-    }
-
     :root {
-      --bg: #fafaf8;
-      --bg-card: #ffffff;
-      --bg-accent: #f5f4f0;
-      --text: #0f172a;
-      --text-secondary: #475569;
-      --text-dim: #94a3b8;
-      --border: #e2e0d9;
-      --accent: #0f172a;
-      --max-w: 980px;
-      --serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
-      --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --bg: #faf9f7;
+      --bg-warm: #f3f1ec;
+      --ink: #1c1c1c;
+      --mid: #555;
+      --light: #999;
+      --line: #e5e2dc;
+      --accent: #b34233;
+      --accent-light: rgba(179, 66, 51, 0.08);
+      --serif: 'Source Serif 4', Georgia, serif;
+      --sans: 'Outfit', system-ui, sans-serif;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: var(--sans);
       background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.65;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Subtle grain */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0.02;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      z-index: 9999;
+    a { color: inherit; }
+    ::selection { background: var(--accent-light); color: var(--ink); }
+
+    .w {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 32px;
     }
 
-    a { color: inherit; text-decoration: none; }
-
-    /* ── Nav ────────────────────────────────── */
+    /* ═══ Nav ═══ */
     .nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      max-width: var(--max-w);
-      margin: 0 auto;
-      padding: 24px;
+      padding: 32px 0;
+      opacity: 0;
+      animation: enter 0.6s ease forwards;
     }
-    .nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 700;
-      font-size: 15px;
-      letter-spacing: -0.01em;
-    }
-    .nav-logo {
-      width: 30px;
-      height: 30px;
-      background: var(--accent);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
+    .logo {
       font-family: var(--serif);
-      font-size: 15px;
-      font-style: italic;
+      font-size: 19px;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: -0.02em;
+      position: relative;
     }
+    .logo::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+    .logo:hover::after { width: 100%; }
+
     .nav-links {
       display: flex;
-      align-items: center;
-      gap: 28px;
+      gap: 32px;
       font-size: 14px;
+      font-weight: 500;
+      color: var(--light);
     }
     .nav-links a {
-      color: var(--text-secondary);
-      transition: color 0.2s;
+      text-decoration: none;
+      color: var(--light);
+      transition: color 0.25s;
     }
-    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover { color: var(--ink); }
 
-    /* ── Hero ───────────────────────────────── */
+    /* ═══ Hero ═══ */
     .hero {
-      max-width: var(--max-w);
-      margin: 0 auto;
-      padding: 72px 24px 48px;
+      padding: 80px 0 100px;
+      opacity: 0;
+      animation: enter 0.7s ease 0.1s forwards;
     }
     .hero h1 {
       font-family: var(--serif);
-      font-size: clamp(36px, 5.5vw, 56px);
-      font-weight: 400;
-      line-height: 1.12;
-      letter-spacing: -0.02em;
-      max-width: 680px;
+      font-size: clamp(36px, 5.5vw, 54px);
+      font-weight: 600;
+      line-height: 1.18;
+      letter-spacing: -0.025em;
+      max-width: 620px;
+    }
+    .hero h1 .dot {
+      color: var(--accent);
     }
     .hero-sub {
+      margin-top: 28px;
       font-size: 17px;
-      color: var(--text-secondary);
-      max-width: 520px;
-      margin-top: 20px;
-      line-height: 1.7;
+      line-height: 1.75;
+      color: var(--mid);
+      max-width: 460px;
     }
-    .hero-badges {
-      display: flex;
-      gap: 12px;
-      margin-top: 32px;
-      flex-wrap: wrap;
-    }
-    .hero-badge {
+    .hero-location {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 6px 14px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 100px;
+      gap: 8px;
+      margin-top: 32px;
       font-size: 13px;
-      color: var(--text-secondary);
+      font-weight: 500;
+      color: var(--light);
+      letter-spacing: 0.04em;
     }
-    .hero-badge-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #22c55e;
+    .hero-location::before {
+      content: '';
+      width: 32px;
+      height: 1px;
+      background: var(--line);
     }
 
-    /* ── Products ───────────────────────────── */
+    /* ═══ Products ═══ */
     .products {
-      max-width: var(--max-w);
-      margin: 0 auto;
-      padding: 48px 24px 80px;
+      padding: 72px 0 88px;
+      border-top: 1px solid var(--line);
+      opacity: 0;
+      animation: enter 0.7s ease 0.2s forwards;
     }
     .section-label {
-      font-size: 12px;
-      font-weight: 600;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--light);
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-dim);
-      margin-bottom: 32px;
+      letter-spacing: 0.1em;
+      margin-bottom: 40px;
     }
-    .product-grid {
+
+    .product {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+      grid-template-columns: 1fr auto;
+      gap: 32px;
+      align-items: baseline;
+      padding: 28px 0 28px 0;
+      border-bottom: 1px solid var(--line);
+      text-decoration: none;
+      position: relative;
+      transition: all 0.3s ease;
     }
-    .product-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 28px;
+    .product:first-of-type {
+      border-top: 1px solid var(--line);
+    }
+    /* Accent bar that slides in on hover */
+    .product::before {
+      content: '';
+      position: absolute;
+      left: -32px;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--accent);
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.3s ease;
+    }
+    .product:hover::before {
+      transform: scaleY(1);
+    }
+    .product:hover {
+      padding-left: 16px;
+      background: linear-gradient(90deg, var(--accent-light), transparent 70%);
+    }
+    .product:hover .product-name {
+      color: var(--accent);
+    }
+    .product:hover .arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .product-name {
+      font-family: var(--serif);
+      font-size: 21px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 5px;
+      transition: color 0.25s;
+    }
+    .product-desc {
+      font-size: 15px;
+      color: var(--mid);
+      line-height: 1.6;
+      max-width: 500px;
+    }
+    .product-info {
+      text-align: right;
+      white-space: nowrap;
+      padding-top: 2px;
       display: flex;
       flex-direction: column;
-      transition: border-color 0.25s, box-shadow 0.25s;
+      align-items: flex-end;
+      gap: 4px;
+    }
+    .product-type {
+      font-size: 12px;
+      color: var(--light);
+      letter-spacing: 0.02em;
+    }
+    .product-price {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--mid);
+    }
+    .arrow {
+      font-size: 18px;
+      color: var(--accent);
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: all 0.3s ease;
+      margin-top: 4px;
+    }
+
+    /* ═══ Divider ═══ */
+    .divider {
+      padding: 72px 0;
+      background: var(--bg-warm);
+      text-align: center;
       position: relative;
     }
-    .product-card:hover {
-      border-color: #cbd5e1;
-      box-shadow: 0 8px 30px rgba(15, 23, 42, 0.04);
+    .divider::before,
+    .divider::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 1px;
+      background: var(--line);
     }
-    .product-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-    }
-    .product-tag {
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      padding: 3px 10px;
-      border-radius: 6px;
-    }
-    .tag-webapp { background: #dbeafe; color: #1d4ed8; }
-    .tag-extension { background: #f3e8ff; color: #7c3aed; }
-    .tag-free { background: #dcfce7; color: #16a34a; }
-    .product-card h3 {
+    .divider::before { top: 0; }
+    .divider::after { bottom: 0; }
+    .divider p {
       font-family: var(--serif);
       font-size: 22px;
       font-weight: 400;
-      margin-bottom: 8px;
-    }
-    .product-card p {
-      font-size: 14px;
-      color: var(--text-secondary);
-      line-height: 1.65;
-      flex: 1;
-    }
-    .product-footer {
-      margin-top: 18px;
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .product-meta {
-      font-size: 13px;
-      color: var(--text-dim);
-    }
-    .product-link {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text);
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      transition: gap 0.2s;
-    }
-    .product-link:hover { gap: 8px; }
-    .product-link svg { width: 14px; height: 14px; }
-
-    /* ── About ──────────────────────────────── */
-    .about {
-      max-width: var(--max-w);
+      font-style: italic;
+      line-height: 1.55;
+      color: var(--mid);
+      max-width: 500px;
       margin: 0 auto;
-      padding: 0 24px 80px;
     }
-    .about-box {
-      background: var(--accent);
-      color: #f1f5f9;
-      border-radius: 18px;
-      padding: 52px;
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 48px;
+
+    /* ═══ About ═══ */
+    .about {
+      padding: 80px 0 88px;
     }
-    .about-box h2 {
-      font-family: var(--serif);
-      font-size: 28px;
-      font-weight: 400;
-      margin-bottom: 16px;
-      color: #fff;
-    }
-    .about-box > div:first-child p {
-      font-size: 15px;
-      line-height: 1.75;
-      color: #94a3b8;
-    }
-    .values-grid {
+    .about-cols {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 80px;
     }
-    .value-item h3 {
-      font-size: 14px;
+    .about h2 {
+      font-family: var(--serif);
+      font-size: 26px;
       font-weight: 600;
-      margin-bottom: 4px;
-      color: #e2e8f0;
+      line-height: 1.3;
+      letter-spacing: -0.015em;
+      margin-bottom: 20px;
     }
-    .value-item p {
-      font-size: 13px;
-      color: #64748b;
-      line-height: 1.55;
+    .about p {
+      font-size: 15px;
+      color: var(--mid);
+      line-height: 1.75;
+      margin-bottom: 14px;
     }
 
-    /* ── Footer ─────────────────────────────── */
-    .footer {
-      border-top: 1px solid var(--border);
-      padding: 28px 24px;
+    .values {
+      list-style: none;
     }
-    .footer-inner {
-      max-width: var(--max-w);
-      margin: 0 auto;
+    .values li {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+      color: var(--mid);
+      line-height: 1.6;
+    }
+    .values li:first-child {
+      border-top: 1px solid var(--line);
+    }
+    .values strong {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .values strong::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* ═══ Footer ═══ */
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 28px 0 44px;
+    }
+    .footer-row {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 16px;
     }
     .footer-links {
       display: flex;
-      gap: 20px;
+      gap: 24px;
       font-size: 13px;
     }
     .footer-links a {
-      color: var(--text-dim);
-      transition: color 0.2s;
+      text-decoration: none;
+      color: var(--light);
+      transition: color 0.25s;
     }
-    .footer-links a:hover { color: var(--text-secondary); }
+    .footer-links a:hover { color: var(--ink); }
     .footer-copy {
       font-size: 12px;
-      color: var(--text-dim);
+      color: var(--light);
     }
 
-    /* ── Animations ─────────────────────────── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    /* ═══ Animations ═══ */
+    @keyframes enter {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-    .fade-up {
-      animation: fadeUp 0.7s ease-out both;
-    }
-    .delay-1 { animation-delay: 0.1s; }
-    .delay-2 { animation-delay: 0.2s; }
-    .delay-3 { animation-delay: 0.3s; }
-    .delay-4 { animation-delay: 0.4s; }
 
-    /* ── Responsive ─────────────────────────── */
-    @media (max-width: 720px) {
-      .hero { padding: 48px 20px 36px; }
-      .product-grid { grid-template-columns: 1fr; }
-      .about-box {
+    /* ═══ Mobile ═══ */
+    @media (max-width: 700px) {
+      .w { padding: 0 24px; }
+      .hero { padding: 56px 0 64px; }
+      .hero-sub { font-size: 16px; }
+      .product {
         grid-template-columns: 1fr;
-        gap: 32px;
-        padding: 32px;
-      }
-      .values-grid { grid-template-columns: 1fr; }
-      .footer-inner {
-        flex-direction: column;
         gap: 12px;
-        text-align: center;
+        padding: 24px 0;
       }
-      .footer-links { flex-wrap: wrap; justify-content: center; }
+      .product::before { left: -24px; }
+      .product-info {
+        text-align: left;
+        flex-direction: row;
+        gap: 12px;
+        align-items: center;
+      }
+      .arrow { display: none; }
+      .about-cols {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+      .divider p { font-size: 19px; }
+      .nav-links { gap: 20px; font-size: 13px; }
+      .footer-row {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .footer-links { flex-wrap: wrap; gap: 14px; }
     }
   </style>
 </head>
 <body>
 
-  <nav class="nav fade-up">
-    <a href="/" class="nav-brand">
-      <span class="nav-logo"><i>fd</i></span>
-      Feishu Digital
-    </a>
-    <div class="nav-links">
-      <a href="#products">Products</a>
-      <a href="#about">About</a>
+  <header>
+    <div class="w">
+      <nav class="nav">
+        <a href="/" class="logo">Feishu Digital</a>
+        <div class="nav-links">
+          <a href="#products">Products</a>
+          <a href="#about">About</a>
+          <a href="mailto:feishudigital@gmail.com">Contact</a>
+        </div>
+      </nav>
     </div>
-  </nav>
+  </header>
 
   <section class="hero">
-    <h1 class="fade-up">Software that respects<br>your privacy.</h1>
-    <p class="hero-sub fade-up delay-1">
-      We build browser extensions and web tools for professionals.
-      Privacy-first, no bloat, built in Hamburg.
-    </p>
-    <div class="hero-badges fade-up delay-2">
-      <span class="hero-badge">
-        <span class="hero-badge-dot"></span>
-        DSGVO/GDPR compliant
-      </span>
-      <span class="hero-badge">Hosted in the EU</span>
-      <span class="hero-badge">No tracking</span>
+    <div class="w">
+      <h1>Focused software for professionals<span class="dot">.</span></h1>
+      <p class="hero-sub">
+        Browser extensions and web applications that solve specific problems.
+        No bloat, no tracking. Built and hosted in the EU.
+      </p>
+      <div class="hero-location">Hamburg, Germany</div>
     </div>
   </section>
 
   <section class="products" id="products">
-    <div class="section-label fade-up delay-2">Products</div>
-    <div class="product-grid">
+    <div class="w">
+      <div class="section-label">Products</div>
 
-      <div class="product-card fade-up delay-2">
-        <div class="product-header">
-          <span class="product-tag tag-webapp">Web App</span>
-          <span class="product-tag tag-free">Free</span>
+      <a class="product" href="https://arztrechnung.feishudigital.de" target="_blank" rel="noopener">
+        <div>
+          <div class="product-name">Arztrechnung Pr&uuml;fer</div>
+          <div class="product-desc">
+            Privatrechnung kostenlos pr&uuml;fen. Vergleicht GO&Auml;- und GOZ-Positionen
+            mit amtlichen Schwellenwerten. Ampelsystem und PDF-Report.
+          </div>
         </div>
-        <h3>Arztrechnung Pr&uuml;fer</h3>
-        <p>
-          Privatrechnung kostenlos pr&uuml;fen. Vergleicht jede GO&Auml;- und GOZ-Position
-          mit den amtlichen Schwellenwerten. Ampelsystem, PDF-Report, 2.500+ Geb&uuml;hrenziffern.
-        </p>
-        <div class="product-footer">
-          <span class="product-meta">100% kostenlos &middot; Kein Account n&ouml;tig</span>
-          <a class="product-link" href="https://arztrechnung.feishudigital.de" target="_blank">
-            &Ouml;ffnen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-          </a>
+        <div class="product-info">
+          <div class="product-type">Web App</div>
+          <div class="product-price">Free</div>
+          <div class="arrow">&rarr;</div>
         </div>
-      </div>
+      </a>
 
-      <div class="product-card fade-up delay-3">
-        <div class="product-header">
-          <span class="product-tag tag-webapp">Web App</span>
+      <a class="product" href="https://jveg.feishudigital.de" target="_blank" rel="noopener">
+        <div>
+          <div class="product-name">JVEG Rechner</div>
+          <div class="product-desc">
+            Verg&uuml;tungsantr&auml;ge nach JVEG berechnen und als PDF erstellen.
+            F&uuml;r Sachverst&auml;ndige, Dolmetscher und &Uuml;bersetzer.
+          </div>
         </div>
-        <h3>JVEG Rechner</h3>
-        <p>
-          Verg&uuml;tungsantr&auml;ge nach JVEG berechnen &amp; als PDF erstellen.
-          F&uuml;r Sachverst&auml;ndige, Dolmetscher und &Uuml;bersetzer.
-          Inkl. Frist-Tracking &amp; DATEV-Export.
-        </p>
-        <div class="product-footer">
-          <span class="product-meta">Free tier &middot; Pro &euro;9.99/mo</span>
-          <a class="product-link" href="https://jveg.feishudigital.de" target="_blank">
-            Try free <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-          </a>
+        <div class="product-info">
+          <div class="product-type">Web App</div>
+          <div class="product-price">Free + Pro</div>
+          <div class="arrow">&rarr;</div>
         </div>
-      </div>
+      </a>
 
-      <div class="product-card fade-up delay-3">
-        <div class="product-header">
-          <span class="product-tag tag-extension">Chrome Extension</span>
+      <a class="product" href="https://chromewebstore.google.com/detail/readability-scorer/cnpnapjocbjcjpmmbodjajihofochnhc" target="_blank" rel="noopener">
+        <div>
+          <div class="product-name">Readability Scorer</div>
+          <div class="product-desc">
+            Real-time readability analysis for any text on the web.
+            Seven formulas, sentence-level feedback, inline highlighting.
+          </div>
         </div>
-        <h3>Readability Scorer</h3>
-        <p>
-          Real-time readability analysis for any text field. 7 formulas,
-          sentence-level feedback, inline highlighting, writing goals.
-        </p>
-        <div class="product-footer">
-          <span class="product-meta">Free tier &middot; Pro optional</span>
-          <a class="product-link" href="https://chromewebstore.google.com/detail/readability-scorer/cnpnapjocbjcjpmmbodjajihofochnhc" target="_blank">
-            Chrome Web Store <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-          </a>
+        <div class="product-info">
+          <div class="product-type">Chrome Extension</div>
+          <div class="product-price">Free + Pro</div>
+          <div class="arrow">&rarr;</div>
         </div>
-      </div>
+      </a>
 
-      <div class="product-card fade-up delay-4">
-        <div class="product-header">
-          <span class="product-tag tag-extension">Chrome Extension</span>
+      <a class="product" href="https://chromewebstore.google.com/detail/ai-chat-organizer-%E2%80%94-folde/dccngnillnacgafjhlnlopfjedkonehg" target="_blank" rel="noopener">
+        <div>
+          <div class="product-name">AI Chat Organizer</div>
+          <div class="product-desc">
+            Organize ChatGPT, Claude, and Gemini conversations with
+            folders, tags, search, and prompt templates.
+          </div>
         </div>
-        <h3>AI Chat Organizer</h3>
-        <p>
-          Organize your ChatGPT, Claude, and Gemini conversations with
-          folders, tags, search, and prompt templates.
-        </p>
-        <div class="product-footer">
-          <span class="product-meta">Free tier &middot; Pro optional</span>
-          <a class="product-link" href="https://chromewebstore.google.com/detail/ai-chat-organizer-%E2%80%94-folde/dccngnillnacgafjhlnlopfjedkonehg" target="_blank">
-            Chrome Web Store <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-          </a>
+        <div class="product-info">
+          <div class="product-type">Chrome Extension</div>
+          <div class="product-price">Free + Pro</div>
+          <div class="arrow">&rarr;</div>
         </div>
-      </div>
+      </a>
+    </div>
+  </section>
 
+  <section class="divider">
+    <div class="w">
+      <p>We build each product to solve one problem well &mdash; then get out of your way.</p>
     </div>
   </section>
 
   <section class="about" id="about">
-    <div class="about-box fade-up delay-3">
-      <div>
-        <h2>About Feishu Digital</h2>
-        <p>
-          Independent software studio based in Hamburg, Germany.
-          We build tools that help professionals work more efficiently &mdash;
-          without compromising on privacy or simplicity.
-        </p>
-        <p style="margin-top: 14px;">
-          We minimize data collection across all our products. Browser extensions
-          process data locally. We don&rsquo;t run analytics and don&rsquo;t sell data.
-        </p>
-      </div>
-      <div class="values-grid">
-        <div class="value-item">
-          <h3>Privacy-Conscious</h3>
-          <p>Minimal data collection. Extensions work locally. Web apps store data encrypted in the EU.</p>
+    <div class="w">
+      <div class="about-cols">
+        <div>
+          <h2>Independent software studio, Hamburg.</h2>
+          <p>
+            Feishu Digital builds tools that help professionals work more
+            efficiently. No feature bloat, no dark patterns, no unnecessary
+            data collection.
+          </p>
+          <p>
+            Every product has a free tier. We fund development through
+            optional Pro upgrades.
+          </p>
         </div>
-        <div class="value-item">
-          <h3>No Bloat</h3>
-          <p>Small, fast, focused tools that do one thing well.</p>
-        </div>
-        <div class="value-item">
-          <h3>Fair Pricing</h3>
-          <p>Every product has a free tier. Pro upgrades are optional.</p>
-        </div>
-        <div class="value-item">
-          <h3>Made in Germany</h3>
-          <p>DSGVO/GDPR compliant. Hosted in the EU. German engineering.</p>
-        </div>
+        <ul class="values">
+          <li>
+            <strong>Local-first processing</strong>
+            Browser extensions process data on your device. Nothing leaves your browser.
+          </li>
+          <li>
+            <strong>EU-hosted, GDPR compliant</strong>
+            Web app data stored in Frankfurt, Germany. Encrypted in transit and at rest.
+          </li>
+          <li>
+            <strong>No tracking</strong>
+            No analytics, no pixels, no third-party tracking. We don&rsquo;t sell data.
+          </li>
+          <li>
+            <strong>Fair pricing</strong>
+            Every product works without paying. Pro features are optional.
+          </li>
+        </ul>
       </div>
     </div>
   </section>
 
-  <footer class="footer">
-    <div class="footer-inner">
-      <div class="footer-links">
-        <a href="impressum.html">Impressum</a>
-        <a href="privacy.html">Privacy</a>
-        <a href="terms.html">Terms</a>
-        <a href="refund.html">Refund Policy</a>
-        <a href="mailto:feishudigital@gmail.com">feishudigital@gmail.com</a>
+  <footer>
+    <div class="w">
+      <div class="footer-row">
+        <div class="footer-links">
+          <a href="impressum.html">Impressum</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+          <a href="refund.html">Refund</a>
+          <a href="mailto:feishudigital@gmail.com">feishudigital@gmail.com</a>
+        </div>
+        <span class="footer-copy">&copy; 2026 Feishu Digital</span>
       </div>
-      <span class="footer-copy">&copy; 2026 Feishu Digital</span>
     </div>
   </footer>
 
