@@ -176,6 +176,29 @@
       overflow: hidden;
       padding: 120px 0 80px;
     }
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .hero-video video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.5;
+      filter: brightness(0.72) saturate(1.08);
+    }
+    .hero-video::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(6, 10, 17, 0.78) 0%, rgba(6, 10, 17, 0.38) 45%, var(--night) 100%);
+    }
+    .hero > .w {
+      position: relative;
+      z-index: 2;
+    }
     .hero-glow {
       position: absolute;
       top: -30%;
@@ -787,6 +810,11 @@
   </nav>
 
   <header class="hero">
+    <div class="hero-video" aria-hidden="true">
+      <video id="heroVideo" autoplay muted loop playsinline preload="metadata" poster="assets/hero-poster.jpg">
+        <source src="assets/hero-loop.mp4" type="video/mp4">
+      </video>
+    </div>
     <div class="hero-glow" aria-hidden="true"></div>
     <div class="hero-beam" id="beam" aria-hidden="true"></div>
     <div class="w">
@@ -1071,6 +1099,10 @@
       onScroll();
 
       var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) {
+        var hv = document.getElementById('heroVideo');
+        if (hv) { hv.removeAttribute('autoplay'); hv.pause(); }
+      }
       if (reduced || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
       gsap.registerPlugin(ScrollTrigger);
