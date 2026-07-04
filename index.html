@@ -106,6 +106,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     html { scroll-behavior: smooth; }
+    html.lenis, html.lenis body { scroll-behavior: auto; }
 
     body {
       font-family: var(--body);
@@ -372,12 +373,12 @@
       background: #fbf8f1;
       padding: 22px 22px 26px;
       box-shadow: 0 2px 4px rgba(38, 34, 28, 0.08), 0 14px 30px -14px rgba(38, 34, 28, 0.25);
-      -webkit-mask-image: radial-gradient(circle at 9px 9px, transparent 5.5px, black 6px);
-      mask-image: radial-gradient(circle at 9px 9px, transparent 5.5px, black 6px);
-      -webkit-mask-size: 18px 18px;
-      mask-size: 18px 18px;
-      -webkit-mask-position: -9px -9px;
-      mask-position: -9px -9px;
+      -webkit-mask:
+        linear-gradient(#000 0 0) 9px 9px / calc(100% - 18px) calc(100% - 18px) no-repeat,
+        radial-gradient(circle at 9px 9px, transparent 5.5px, #000 6px) -9px -9px / 18px 18px;
+      mask:
+        linear-gradient(#000 0 0) 9px 9px / calc(100% - 18px) calc(100% - 18px) no-repeat,
+        radial-gradient(circle at 9px 9px, transparent 5.5px, #000 6px) -9px -9px / 18px 18px;
       transition: transform 0.35s ease, box-shadow 0.35s ease;
     }
     .card:nth-child(1) { transform: rotate(-1.6deg); }
@@ -466,16 +467,6 @@
       position: relative;
       overflow: hidden;
     }
-    .night-squirrel {
-      position: absolute;
-      top: 48px;
-      right: 6vw;
-      width: min(20vw, 250px);
-      filter: invert(0.92) brightness(1.05);
-      mix-blend-mode: screen;
-      opacity: 0.55;
-      pointer-events: none;
-    }
     .night-inner {
       position: relative;
       z-index: 2;
@@ -503,6 +494,14 @@
       background: #e8a06a;
       box-shadow: 0 0 10px 2px rgba(232, 160, 106, 0.5);
       opacity: 0.8;
+      animation: drift 7s ease-in-out infinite alternate;
+    }
+    .firefly:nth-child(2) { animation-duration: 9s; animation-delay: 1.2s; }
+    .firefly:nth-child(3) { animation-duration: 11s; animation-delay: 2.4s; }
+    @keyframes drift {
+      from { transform: translate(0, 0); opacity: 0.35; }
+      50% { opacity: 0.9; }
+      to { transform: translate(-26px, 18px); opacity: 0.4; }
     }
 
     /* ═══ Principles ═══ */
@@ -612,17 +611,22 @@
       color: var(--stein);
     }
 
-    /* ═══ Entrance (Phase B: nur sanfte Load-Fades) ═══ */
-    .fade-in {
-      opacity: 0;
-      transform: translateY(16px);
-      animation: rise 0.9s ease forwards;
+    /* ═══ Choreografie-Elemente ═══ */
+    .hero-particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
     }
-    .fade-in.d1 { animation-delay: 0.15s; }
-    .fade-in.d2 { animation-delay: 0.3s; }
-    .fade-in.d3 { animation-delay: 0.45s; }
-    @keyframes rise {
-      to { opacity: 1; transform: translateY(0); }
+    .glider {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: min(16vw, 200px);
+      z-index: 8;
+      pointer-events: none;
+      opacity: 0;
+      will-change: transform;
     }
 
     /* ═══ Mobile ═══ */
@@ -706,25 +710,28 @@
     </div>
   </nav>
 
-  <header class="hero">
-    <img class="hero-branch ink fade-in" src="assets/ink/branch.webp" alt="" aria-hidden="true">
-    <img class="hero-squirrel ink fade-in d2" src="assets/ink/squirrel-sit.webp" alt="Ink drawing of a flying squirrel sitting on a branch">
-    <img class="hero-gulls ink fade-in d3" src="assets/ink/gulls.webp" alt="" aria-hidden="true">
+  <header class="hero" id="hero">
+    <img class="hero-branch ink" id="heroBranch" src="assets/ink/branch.webp" alt="" aria-hidden="true">
+    <img class="hero-squirrel" id="heroSquirrel" src="assets/ink/squirrel-sit-opaque.webp" alt="Ink drawing of a flying squirrel sitting on a branch">
+    <img class="hero-gulls ink" id="heroGulls" src="assets/ink/gulls.webp" alt="" aria-hidden="true">
+    <canvas class="hero-particles" id="heroParticles" aria-hidden="true"></canvas>
     <div class="w">
-      <div class="hero-copy">
-        <h1 class="fade-in d1" data-i18n="hero_h1_html" data-i18n-html>Software from Hamburg,<br>gathered <em>piece by piece</em>.</h1>
-        <p class="hero-sub fade-in d2" data-i18n="hero_sub_html" data-i18n-html>Feishu (<span class="zh">飛鼠</span>) means flying squirrel. This is its collection: browser extensions and web tools that each solve one problem properly. No bloat, no tracking, hosted in the EU.</p>
-        <a class="hero-cta fade-in d3" href="#collection" data-i18n="hero_cta">View the collection ↓</a>
+      <div class="hero-copy" id="heroCopy">
+        <h1 data-i18n="hero_h1_html" data-i18n-html>Software from Hamburg,<br>gathered <em>piece by piece</em>.</h1>
+        <p class="hero-sub" data-i18n="hero_sub_html" data-i18n-html>Feishu (<span class="zh">飛鼠</span>) means flying squirrel. This is its collection: browser extensions and web tools that each solve one problem properly. No bloat, no tracking, hosted in the EU.</p>
+        <a class="hero-cta" href="#collection" data-i18n="hero_cta">View the collection ↓</a>
       </div>
     </div>
     <div class="hero-skyline">
-      <img class="ink" src="assets/ink/skyline.webp" alt="" aria-hidden="true">
+      <img class="ink" id="heroSkyline" src="assets/ink/skyline.webp" alt="" aria-hidden="true">
     </div>
   </header>
 
+  <img class="glider ink" id="glider" src="assets/ink/squirrel-wings-a.webp" alt="" aria-hidden="true">
+
   <main>
     <section class="collection" id="collection">
-      <img class="collection-squirrel ink" src="assets/ink/squirrel-wings-a.webp" alt="Ink drawing of a squirrel gliding with eagle wings">
+      <img class="collection-squirrel ink" id="collectionSquirrel" src="assets/ink/squirrel-wings-a.webp" alt="Ink drawing of a squirrel gliding with eagle wings">
       <div class="w">
         <div class="section-head">
           <span class="label" data-i18n="col_label">The Collection</span>
@@ -789,7 +796,6 @@
     </section>
 
     <section class="night" aria-label="Night">
-      <img class="night-squirrel" src="assets/ink/squirrel-wings-b.webp" alt="" aria-hidden="true">
       <span class="firefly" style="top: 22%; left: 58%;" aria-hidden="true"></span>
       <span class="firefly" style="top: 64%; left: 74%; opacity: 0.5;" aria-hidden="true"></span>
       <span class="firefly" style="top: 38%; left: 86%; opacity: 0.65;" aria-hidden="true"></span>
@@ -856,6 +862,10 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/MotionPathPlugin.min.js" integrity="sha384-lgP6SKZeYZwy7E1FNW3+rGRX/lkJF6ipUUkyET+ZdEhxkLidIF0aewQq2LZaOJ2x" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js" integrity="sha384-O55L/6rhHr9CFvrxqv5luxOCcmVaBmETbZbJDP+Do8T0pztTACsFBD/IXCNkj7DV" crossorigin="anonymous"></script>
   <script>
     (function () {
       var nav = document.getElementById('nav');
@@ -932,6 +942,215 @@
       if (saved === 'de' || (!saved && (navigator.language || '').toLowerCase().indexOf('de') === 0)) {
         setLang('de');
       }
+
+      /* ═══ Choreografie ═══ */
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+      gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+
+      var lenis = null;
+      if (typeof Lenis !== 'undefined') {
+        lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add(function (t) { lenis.raf(t * 1000); });
+        gsap.ticker.lagSmoothing(0);
+      }
+      document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+        a.addEventListener('click', function (e) {
+          var target = document.querySelector(a.getAttribute('href'));
+          if (target && lenis) { e.preventDefault(); lenis.scrollTo(target, { offset: -40 }); }
+        });
+      });
+
+      /* Akt 1 — Laden: der Ast malt sich, das Hörnchen erscheint */
+      gsap.set('#heroBranch', { clipPath: 'inset(0 100% 0 0)' });
+      gsap.set('#heroSquirrel', { opacity: 0, scale: 0.88, y: 14, transformOrigin: '50% 90%' });
+      gsap.set('#heroGulls', { opacity: 0, x: 40 });
+      gsap.set('#heroSkyline', { opacity: 0, y: 24 });
+      gsap.set('#heroCopy > *', { opacity: 0, y: 40 });
+
+      var intro = gsap.timeline({ defaults: { ease: 'power2.out' } });
+      intro
+        .to('#heroBranch', { clipPath: 'inset(0 0% 0 0)', duration: 2.0, ease: 'power2.inOut' }, 0.2)
+        .to('#heroSquirrel', { opacity: 1, scale: 1, y: 0, duration: 0.9, ease: 'back.out(1.6)' }, 1.7)
+        .to('#heroSquirrel', { y: -6, duration: 0.35, yoyo: true, repeat: 1, ease: 'sine.inOut' }, 2.6)
+        .to('#heroGulls', { opacity: 0.75, x: 0, duration: 1.4 }, 2.0)
+        .to('#heroSkyline', { opacity: 0.9, y: 0, duration: 1.2 }, 2.2);
+
+      /* Akt 2 — Erster Scroll: Hero gepinnt, Text blendet ein */
+      var mm = gsap.matchMedia();
+      mm.add('(min-width: 861px)', function () {
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: '#hero',
+            start: 'top top',
+            end: '+=90%',
+            pin: true,
+            scrub: 0.5
+          }
+        })
+          .to('#heroCopy > *', { opacity: 1, y: 0, stagger: 0.14, duration: 0.5, ease: 'power2.out' }, 0.05)
+          .to('#heroBranch', { xPercent: -6, opacity: 0.85, duration: 0.5 }, 0.5)
+          .to('#heroSquirrel', { opacity: 0, scale: 0.92, duration: 0.25 }, 0.72);
+
+        /* Akt 3 — Gleitflug zur Sammlung */
+        var glider = document.getElementById('glider');
+        var landing = document.getElementById('collectionSquirrel');
+        gsap.set(landing, { opacity: 0 });
+        gsap.set(glider, { opacity: 0 });
+
+        function pathPoints() {
+          var l = landing.getBoundingClientRect();
+          var scrollY = window.scrollY;
+          var lx = l.left, ly = l.top + scrollY;
+          var startY = window.innerHeight * 1.15;
+          return [
+            { x: window.innerWidth * 0.16, y: startY },
+            { x: window.innerWidth * 0.55, y: startY + (ly - startY) * 0.4 },
+            { x: lx * 0.8, y: startY + (ly - startY) * 0.75 },
+            { x: lx, y: ly }
+          ];
+        }
+
+        var gliderTl = null;
+        function buildGlider() {
+          if (gliderTl) {
+            if (gliderTl.scrollTrigger) gliderTl.scrollTrigger.kill();
+            gliderTl.kill();
+          }
+          gliderTl = gsap.timeline({
+            scrollTrigger: {
+              trigger: '#collection',
+              start: 'top 130%',
+              end: 'top 25%',
+              scrub: 0.8,
+              onLeave: function () { gsap.to(landing, { opacity: 1, duration: 0.3 }); gsap.set(glider, { opacity: 0 }); },
+              onEnterBack: function () { gsap.set(landing, { opacity: 0 }); }
+            }
+          })
+            .to(glider, { opacity: 1, duration: 0.08 }, 0)
+            .to(glider, {
+              motionPath: { path: pathPoints(), curviness: 1.4, autoRotate: 18 },
+              ease: 'none',
+              duration: 1
+            }, 0)
+            .to(glider, { opacity: 0, duration: 0.06 }, 0.95);
+        }
+        if (document.readyState === 'complete') {
+          setTimeout(buildGlider, 50);
+        } else {
+          window.addEventListener('load', function () { setTimeout(buildGlider, 50); });
+        }
+
+        return function () { if (gliderTl && gliderTl.scrollTrigger) gliderTl.scrollTrigger.kill(); };
+      });
+
+      mm.add('(max-width: 860px)', function () {
+        gsap.to('#heroCopy > *', {
+          opacity: 1, y: 0, stagger: 0.12, duration: 0.8, ease: 'power2.out', delay: 2.6
+        });
+        gsap.set('#glider', { display: 'none' });
+        gsap.set('#collectionSquirrel', { opacity: 1 });
+        return function () {};
+      });
+
+      /* Karten fallen auf den Tisch */
+      var rotations = [-1.6, 1.1, -0.8, 1.8];
+      gsap.from('.card', {
+        y: 70,
+        opacity: 0,
+        rotation: function (i) { return rotations[i % 4] * 5; },
+        duration: 0.8,
+        stagger: 0.13,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: '.cards', start: 'top 78%' }
+      });
+
+      /* Nacht */
+      gsap.from('.night-inner > *', {
+        opacity: 0,
+        y: 34,
+        stagger: 0.15,
+        duration: 0.9,
+        ease: 'power2.out',
+        scrollTrigger: { trigger: '.night', start: 'top 65%' }
+      });
+
+      /* Grundsätze: Stempel-Momente */
+      document.querySelectorAll('.principle').forEach(function (p, i) {
+        var stamp = p.querySelector('.stamp');
+        var base = (i % 2 === 0) ? -5 : 4;
+        var tl = gsap.timeline({
+          scrollTrigger: { trigger: p, start: 'top 82%' }
+        });
+        tl.from(p.querySelectorAll('h3, p'), { opacity: 0, y: 20, stagger: 0.08, duration: 0.5, ease: 'power2.out' }, 0)
+          .fromTo(stamp,
+            { opacity: 0, scale: 1.9, rotation: base * 3 },
+            { opacity: 0.9, scale: 1, rotation: base, duration: 0.4, ease: 'power4.in' }, 0.1)
+          .to(stamp, { scale: 1.08, duration: 0.09, yoyo: true, repeat: 1, ease: 'sine.inOut' }, 0.5);
+      });
+
+      /* Ruhe */
+      gsap.from('.rest > .w > *', {
+        opacity: 0,
+        y: 26,
+        stagger: 0.12,
+        duration: 0.8,
+        ease: 'power2.out',
+        scrollTrigger: { trigger: '.rest', start: 'top 75%' }
+      });
+
+      /* Papier-Flecken im Hero (die Blütenblätter-Übersetzung) */
+      var canvas = document.getElementById('heroParticles');
+      var ctx = canvas.getContext('2d');
+      var hero = document.getElementById('hero');
+      var parts = [];
+      function sizeCanvas() {
+        canvas.width = hero.offsetWidth;
+        canvas.height = hero.offsetHeight;
+      }
+      sizeCanvas();
+      window.addEventListener('resize', sizeCanvas);
+      for (var i = 0; i < 14; i++) {
+        parts.push({
+          x: Math.random() * 2000 % (canvas.width || 1200),
+          y: Math.random() * 2000 % (canvas.height || 800),
+          w: 3 + (i % 5),
+          vx: -(0.15 + (i % 7) * 0.06),
+          vy: 0.08 + (i % 5) * 0.05,
+          rot: (i * 37) % 360,
+          vr: 0.2 + (i % 3) * 0.15,
+          o: 0.1 + (i % 4) * 0.05,
+          red: i % 7 === 0
+        });
+      }
+      var heroVisible = true;
+      ScrollTrigger.create({
+        trigger: '#hero',
+        start: 'top bottom',
+        end: 'bottom top',
+        onToggle: function (self) { heroVisible = self.isActive; }
+      });
+      gsap.ticker.add(function () {
+        if (!heroVisible) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (var j = 0; j < parts.length; j++) {
+          var p = parts[j];
+          p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+          if (p.x < -20) { p.x = canvas.width + 15; p.y = (p.y + 137) % canvas.height; }
+          if (p.y > canvas.height + 20) { p.y = -15; }
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot * Math.PI / 180);
+          ctx.globalAlpha = p.o;
+          ctx.fillStyle = p.red ? '#c94f1c' : '#26221c';
+          ctx.beginPath();
+          ctx.ellipse(0, 0, p.w, p.w * 0.45, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+      });
     })();
   </script>
 
