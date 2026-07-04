@@ -250,6 +250,7 @@
       justify-content: center;
       padding: 130px 0 0;
       overflow: hidden;
+      background: var(--papier);
     }
     .hero-branch {
       position: absolute;
@@ -375,10 +376,10 @@
       box-shadow: 0 2px 4px rgba(38, 34, 28, 0.08), 0 14px 30px -14px rgba(38, 34, 28, 0.25);
       -webkit-mask:
         linear-gradient(#000 0 0) 9px 9px / calc(100% - 18px) calc(100% - 18px) no-repeat,
-        radial-gradient(circle at 9px 9px, transparent 5.5px, #000 6px) -9px -9px / 18px 18px;
+        radial-gradient(circle at 9px 9px, transparent 5.5px, #000 6px) -9px -9px / 18px 18px round;
       mask:
         linear-gradient(#000 0 0) 9px 9px / calc(100% - 18px) calc(100% - 18px) no-repeat,
-        radial-gradient(circle at 9px 9px, transparent 5.5px, #000 6px) -9px -9px / 18px 18px;
+        radial-gradient(circle at 9px 9px, transparent 5.5px, #000 6px) -9px -9px / 18px 18px round;
       transition: transform 0.35s ease, box-shadow 0.35s ease;
     }
     .card:nth-child(1) { transform: rotate(-1.6deg); }
@@ -466,6 +467,15 @@
       padding: 130px 0;
       position: relative;
       overflow: hidden;
+    }
+    .night-squirrel {
+      position: absolute;
+      top: 54px;
+      right: 6vw;
+      width: min(19vw, 240px);
+      filter: invert(1) brightness(1.35);
+      opacity: 0.8;
+      pointer-events: none;
     }
     .night-inner {
       position: relative;
@@ -712,7 +722,7 @@
 
   <header class="hero" id="hero">
     <img class="hero-branch ink" id="heroBranch" src="assets/ink/branch.webp" alt="" aria-hidden="true">
-    <img class="hero-squirrel" id="heroSquirrel" src="assets/ink/squirrel-sit-opaque.webp" alt="Ink drawing of a flying squirrel sitting on a branch">
+    <img class="hero-squirrel" id="heroSquirrel" src="assets/ink/squirrel-sit.webp" alt="Ink drawing of a flying squirrel sitting on a branch">
     <img class="hero-gulls ink" id="heroGulls" src="assets/ink/gulls.webp" alt="" aria-hidden="true">
     <canvas class="hero-particles" id="heroParticles" aria-hidden="true"></canvas>
     <div class="w">
@@ -727,7 +737,9 @@
     </div>
   </header>
 
-  <img class="glider ink" id="glider" src="assets/ink/squirrel-wings-a.webp" alt="" aria-hidden="true">
+  <video class="glider ink" id="glider" muted loop playsinline preload="auto" aria-hidden="true">
+    <source src="assets/ink/wings-flap.mp4" type="video/mp4">
+  </video>
 
   <main>
     <section class="collection" id="collection">
@@ -796,6 +808,7 @@
     </section>
 
     <section class="night" aria-label="Night">
+      <img class="night-squirrel" src="assets/ink/squirrel-wings-c.webp" alt="" aria-hidden="true">
       <span class="firefly" style="top: 22%; left: 58%;" aria-hidden="true"></span>
       <span class="firefly" style="top: 64%; left: 74%; opacity: 0.5;" aria-hidden="true"></span>
       <span class="firefly" style="top: 38%; left: 86%; opacity: 0.65;" aria-hidden="true"></span>
@@ -963,18 +976,49 @@
         });
       });
 
-      /* Akt 1 — Laden: der Ast malt sich, das Hörnchen erscheint */
+      /* Akt 1 — Laden: der Ast malt sich, das Hörnchen läuft ihn entlang */
+      var SQ = {
+        a: 'assets/ink/run-a.webp',
+        b: 'assets/ink/run-b.webp',
+        sit: 'assets/ink/squirrel-sit.webp'
+      };
+      Object.keys(SQ).forEach(function (k) { var im = new Image(); im.src = SQ[k]; });
+
       gsap.set('#heroBranch', { clipPath: 'inset(0 100% 0 0)' });
-      gsap.set('#heroSquirrel', { opacity: 0, scale: 0.88, y: 14, transformOrigin: '50% 90%' });
+      gsap.set('#heroSquirrel', { opacity: 0 });
       gsap.set('#heroGulls', { opacity: 0, x: 40 });
       gsap.set('#heroSkyline', { opacity: 0, y: 24 });
       gsap.set('#heroCopy > *', { opacity: 0, y: 40 });
 
+      function squirrelRun() {
+        var sq = document.getElementById('heroSquirrel');
+        sq.src = SQ.a;
+        var flip = false;
+        var sprite = setInterval(function () {
+          flip = !flip;
+          sq.src = flip ? SQ.b : SQ.a;
+        }, 140);
+        gsap.set(sq, { x: -290, y: 110, scale: 0.82, opacity: 1, transformOrigin: '50% 95%' });
+        gsap.to(sq, {
+          motionPath: {
+            path: [{ x: -290, y: 110 }, { x: -170, y: 58 }, { x: -70, y: 16 }, { x: 0, y: 0 }],
+            curviness: 1.1
+          },
+          scale: 1,
+          duration: 1.9,
+          ease: 'power1.inOut',
+          onComplete: function () {
+            clearInterval(sprite);
+            sq.src = SQ.sit;
+            gsap.fromTo(sq, { y: -10 }, { y: 0, duration: 0.45, ease: 'bounce.out' });
+          }
+        });
+      }
+
       var intro = gsap.timeline({ defaults: { ease: 'power2.out' } });
       intro
         .to('#heroBranch', { clipPath: 'inset(0 0% 0 0)', duration: 2.0, ease: 'power2.inOut' }, 0.2)
-        .to('#heroSquirrel', { opacity: 1, scale: 1, y: 0, duration: 0.9, ease: 'back.out(1.6)' }, 1.7)
-        .to('#heroSquirrel', { y: -6, duration: 0.35, yoyo: true, repeat: 1, ease: 'sine.inOut' }, 2.6)
+        .call(squirrelRun, null, 1.7)
         .to('#heroGulls', { opacity: 0.75, x: 0, duration: 1.4 }, 2.0)
         .to('#heroSkyline', { opacity: 0.9, y: 0, duration: 1.2 }, 2.2);
 
@@ -1022,20 +1066,21 @@
           gliderTl = gsap.timeline({
             scrollTrigger: {
               trigger: '#collection',
-              start: 'top 130%',
-              end: 'top 25%',
-              scrub: 0.8,
-              onLeave: function () { gsap.to(landing, { opacity: 1, duration: 0.3 }); gsap.set(glider, { opacity: 0 }); },
-              onEnterBack: function () { gsap.set(landing, { opacity: 0 }); }
-            }
+              start: 'top 92%',
+              once: true
+            },
+            onStart: function () { if (glider.play) glider.play().catch(function () {}); },
+            onComplete: function () { if (glider.pause) glider.pause(); }
           })
-            .to(glider, { opacity: 1, duration: 0.08 }, 0)
+            .to(glider, { opacity: 1, duration: 0.25 }, 0)
             .to(glider, {
-              motionPath: { path: pathPoints(), curviness: 1.4, autoRotate: 18 },
-              ease: 'none',
-              duration: 1
+              motionPath: { path: pathPoints(), curviness: 1.4 },
+              rotation: 8,
+              ease: 'power1.inOut',
+              duration: 2.6
             }, 0)
-            .to(glider, { opacity: 0, duration: 0.06 }, 0.95);
+            .to(glider, { opacity: 0, duration: 0.35 }, 2.25)
+            .to(landing, { opacity: 1, duration: 0.45 }, 2.25);
         }
         if (document.readyState === 'complete') {
           setTimeout(buildGlider, 50);
@@ -1048,7 +1093,7 @@
 
       mm.add('(max-width: 860px)', function () {
         gsap.to('#heroCopy > *', {
-          opacity: 1, y: 0, stagger: 0.12, duration: 0.8, ease: 'power2.out', delay: 2.6
+          opacity: 1, y: 0, stagger: 0.12, duration: 0.8, ease: 'power2.out', delay: 2.8
         });
         gsap.set('#glider', { display: 'none' });
         gsap.set('#collectionSquirrel', { opacity: 1 });
