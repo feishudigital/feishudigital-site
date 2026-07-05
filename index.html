@@ -252,18 +252,11 @@
       overflow: hidden;
       background: var(--papier);
     }
-    .hero-branch {
+    .hero-run {
       position: absolute;
-      top: 4vh;
-      left: -40px;
-      width: min(58vw, 780px);
-      pointer-events: none;
-    }
-    .hero-squirrel {
-      position: absolute;
-      top: 6vh;
-      left: min(20vw, 260px);
-      width: min(15vw, 190px);
+      top: 3vh;
+      left: -30px;
+      width: min(62vw, 840px);
       pointer-events: none;
     }
     .hero-gulls {
@@ -644,17 +637,12 @@
       .w { padding: 0 22px; }
       .nav-links { display: none; }
       .hero { padding-top: 100px; }
-      .hero-branch {
+      .hero-run {
         position: relative;
         top: 0;
-        left: -30px;
-        width: 88vw;
-        margin-bottom: -8vw;
-      }
-      .hero-squirrel {
-        top: 3vh;
-        left: 34vw;
-        width: 26vw;
+        left: -20px;
+        width: 94vw;
+        margin-bottom: -4vw;
       }
       .hero-gulls { display: none; }
       .hero-copy {
@@ -721,8 +709,9 @@
   </nav>
 
   <header class="hero" id="hero">
-    <img class="hero-branch ink" id="heroBranch" src="assets/ink/branch.webp" alt="" aria-hidden="true">
-    <img class="hero-squirrel" id="heroSquirrel" src="assets/ink/squirrel-sit.webp" alt="Ink drawing of a flying squirrel sitting on a branch">
+    <video class="hero-run ink" id="heroRun" muted playsinline preload="auto" poster="assets/ink/hero-still.webp" aria-label="Ink animation of a flying squirrel running along a branch and sitting down">
+      <source src="assets/ink/squirrel-run.mp4" type="video/mp4">
+    </video>
     <img class="hero-gulls ink" id="heroGulls" src="assets/ink/gulls.webp" alt="" aria-hidden="true">
     <canvas class="hero-particles" id="heroParticles" aria-hidden="true"></canvas>
     <div class="w">
@@ -976,49 +965,18 @@
         });
       });
 
-      /* Akt 1 — Laden: der Ast malt sich, das Hörnchen läuft ihn entlang */
-      var SQ = {
-        a: 'assets/ink/run-a.webp',
-        b: 'assets/ink/run-b.webp',
-        sit: 'assets/ink/squirrel-sit.webp'
-      };
-      Object.keys(SQ).forEach(function (k) { var im = new Image(); im.src = SQ[k]; });
+      /* Akt 1 — Laden: der Ast wird freigelegt, dann läuft das Hörnchen ihn entlang (VACE-Video) */
+      var heroRun = document.getElementById('heroRun');
 
-      gsap.set('#heroBranch', { clipPath: 'inset(0 100% 0 0)' });
-      gsap.set('#heroSquirrel', { opacity: 0 });
+      gsap.set(heroRun, { clipPath: 'inset(0 100% 0 0)' });
       gsap.set('#heroGulls', { opacity: 0, x: 40 });
       gsap.set('#heroSkyline', { opacity: 0, y: 24 });
       gsap.set('#heroCopy > *', { opacity: 0, y: 40 });
 
-      function squirrelRun() {
-        var sq = document.getElementById('heroSquirrel');
-        sq.src = SQ.a;
-        var flip = false;
-        var sprite = setInterval(function () {
-          flip = !flip;
-          sq.src = flip ? SQ.b : SQ.a;
-        }, 140);
-        gsap.set(sq, { x: -290, y: 110, scale: 0.82, opacity: 1, transformOrigin: '50% 95%' });
-        gsap.to(sq, {
-          motionPath: {
-            path: [{ x: -290, y: 110 }, { x: -170, y: 58 }, { x: -70, y: 16 }, { x: 0, y: 0 }],
-            curviness: 1.1
-          },
-          scale: 1,
-          duration: 1.9,
-          ease: 'power1.inOut',
-          onComplete: function () {
-            clearInterval(sprite);
-            sq.src = SQ.sit;
-            gsap.fromTo(sq, { y: -10 }, { y: 0, duration: 0.45, ease: 'bounce.out' });
-          }
-        });
-      }
-
       var intro = gsap.timeline({ defaults: { ease: 'power2.out' } });
       intro
-        .to('#heroBranch', { clipPath: 'inset(0 0% 0 0)', duration: 2.0, ease: 'power2.inOut' }, 0.2)
-        .call(squirrelRun, null, 1.7)
+        .to(heroRun, { clipPath: 'inset(0 0% 0 0)', duration: 1.6, ease: 'power2.inOut' }, 0.2)
+        .call(function () { if (heroRun.play) heroRun.play().catch(function () {}); }, null, 1.6)
         .to('#heroGulls', { opacity: 0.75, x: 0, duration: 1.4 }, 2.0)
         .to('#heroSkyline', { opacity: 0.9, y: 0, duration: 1.2 }, 2.2);
 
@@ -1035,8 +993,7 @@
           }
         })
           .to('#heroCopy > *', { opacity: 1, y: 0, stagger: 0.14, duration: 0.5, ease: 'power2.out' }, 0.05)
-          .to('#heroBranch', { xPercent: -6, opacity: 0.85, duration: 0.5 }, 0.5)
-          .to('#heroSquirrel', { opacity: 0, scale: 0.92, duration: 0.25 }, 0.72);
+          .to(heroRun, { xPercent: -5, opacity: 0.75, duration: 0.5 }, 0.55);
 
         /* Akt 3 — Gleitflug zur Sammlung */
         var glider = document.getElementById('glider');
