@@ -254,10 +254,17 @@
     }
     .hero-run {
       position: absolute;
-      top: 3vh;
-      left: -30px;
-      width: min(62vw, 840px);
+      top: 8vh;
+      left: 0;
+      width: min(86vw, 1460px);
       pointer-events: none;
+      --mx: 0%;
+      -webkit-mask-image: linear-gradient(112deg, #000 34%, rgba(0, 0, 0, 0.55) 46%, transparent 60%);
+      mask-image: linear-gradient(112deg, #000 34%, rgba(0, 0, 0, 0.55) 46%, transparent 60%);
+      -webkit-mask-size: 320% 140%;
+      mask-size: 320% 140%;
+      -webkit-mask-position: var(--mx) 50%;
+      mask-position: var(--mx) 50%;
     }
     .hero-gulls {
       position: absolute;
@@ -270,9 +277,10 @@
     .hero-copy {
       position: relative;
       z-index: 2;
-      max-width: 640px;
+      max-width: 620px;
       margin-left: auto;
-      padding-top: 16vh;
+      margin-right: 2vw;
+      padding-top: 34vh;
       text-align: left;
     }
     .hero h1 {
@@ -709,8 +717,8 @@
   </nav>
 
   <header class="hero" id="hero">
-    <video class="hero-run ink" id="heroRun" muted playsinline preload="auto" poster="assets/ink/hero-still.webp" aria-label="Ink animation of a flying squirrel running along a branch and sitting down">
-      <source src="assets/ink/squirrel-run.mp4" type="video/mp4">
+    <video class="hero-run ink" id="heroRun" muted playsinline preload="auto" poster="assets/ink/hero-scene-poster.webp" aria-label="Ink animation of a flying squirrel running along a branch, crouching at the tip ready to jump">
+      <source src="assets/ink/hero-scene.mp4" type="video/mp4">
     </video>
     <img class="hero-gulls ink" id="heroGulls" src="assets/ink/gulls.webp" alt="" aria-hidden="true">
     <canvas class="hero-particles" id="heroParticles" aria-hidden="true"></canvas>
@@ -968,17 +976,19 @@
       /* Akt 1 — Laden: der Ast wird freigelegt, dann läuft das Hörnchen ihn entlang (VACE-Video) */
       var heroRun = document.getElementById('heroRun');
 
-      gsap.set(heroRun, { clipPath: 'inset(0 100% 0 0)' });
+      gsap.set(heroRun, { '--mx': '100%' });
       gsap.set('#heroGulls', { opacity: 0, x: 40 });
       gsap.set('#heroSkyline', { opacity: 0, y: 24 });
       gsap.set('#heroCopy > *', { opacity: 0, y: 40 });
 
       var intro = gsap.timeline({ defaults: { ease: 'power2.out' } });
       intro
-        .to(heroRun, { clipPath: 'inset(0 0% 0 0)', duration: 1.6, ease: 'power2.inOut' }, 0.2)
-        .call(function () { if (heroRun.play) heroRun.play().catch(function () {}); }, null, 1.6)
-        .to('#heroGulls', { opacity: 0.75, x: 0, duration: 1.4 }, 2.0)
-        .to('#heroSkyline', { opacity: 0.9, y: 0, duration: 1.2 }, 2.2);
+        .to(heroRun, { '--mx': '0%', duration: 2.4, ease: 'power2.inOut' }, 0.2)
+        .call(function () { if (heroRun.play) heroRun.play().catch(function () {}); }, null, 1.5)
+        .to('#heroGulls', { opacity: 0.75, x: 0, duration: 1.4 }, 2.2)
+        .to('#heroSkyline', { opacity: 0.9, y: 0, duration: 1.2 }, 2.4);
+
+      /* Video endet in der Absprung-Hocke an der Ast-Spitze — der Ruhezustand lädt zum Scrollen ein */
 
       /* Akt 2 — Erster Scroll: Hero gepinnt, Text blendet ein */
       var mm = gsap.matchMedia();
@@ -993,7 +1003,7 @@
           }
         })
           .to('#heroCopy > *', { opacity: 1, y: 0, stagger: 0.14, duration: 0.5, ease: 'power2.out' }, 0.05)
-          .to(heroRun, { xPercent: -5, opacity: 0.75, duration: 0.5 }, 0.55);
+          .to(heroRun, { xPercent: -4, duration: 0.5 }, 0.55);
 
         /* Akt 3 — Gleitflug zur Sammlung */
         var glider = document.getElementById('glider');
@@ -1005,11 +1015,12 @@
           var l = landing.getBoundingClientRect();
           var scrollY = window.scrollY;
           var lx = l.left, ly = l.top + scrollY;
-          var startY = window.innerHeight * 1.15;
+          var startY = window.innerHeight * 1.05;
+          var startX = window.innerWidth * 0.78;
           return [
-            { x: window.innerWidth * 0.16, y: startY },
-            { x: window.innerWidth * 0.55, y: startY + (ly - startY) * 0.4 },
-            { x: lx * 0.8, y: startY + (ly - startY) * 0.75 },
+            { x: startX, y: startY },
+            { x: window.innerWidth * 0.30, y: startY + (ly - startY) * 0.45 },
+            { x: lx * 0.62, y: startY + (ly - startY) * 0.82 },
             { x: lx, y: ly }
           ];
         }
