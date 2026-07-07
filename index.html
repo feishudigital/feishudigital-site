@@ -94,7 +94,7 @@
       --papier-tief: #eae3d2;
       --tusche: #26221c;
       --stein: #7a7264;
-      --siegel: #c94f1c;
+      --siegel: #d42b47;
       --nacht: #141824;
       --nacht-ink: #e8e4da;
       --linie: #d8cfbc;
@@ -266,13 +266,45 @@
       -webkit-mask-position: var(--mx) 50%;
       mask-position: var(--mx) 50%;
     }
-    .hero-gulls {
+    /* Lauf/Blüte/Idle liegen deckungsgleich; heroRun definiert die Box-Höhe, die anderen überlagern */
+    .hero-run-layer { display: block; width: 100%; }
+    #heroRun { position: relative; }
+    #heroBloom, #heroIdle {
       position: absolute;
-      top: 14vh;
-      right: 8vw;
-      width: min(12vw, 150px);
-      opacity: 0.75;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+    }
+    /* Blüten-Äste rechts (Zoom-Durchflug) */
+    .hero-branches {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
       pointer-events: none;
+      z-index: 1;
+    }
+    .hero-branch {
+      position: absolute;
+      will-change: transform, opacity;
+      --mx: 100%;
+      -webkit-mask-image: linear-gradient(248deg, #000 34%, rgba(0, 0, 0, 0.55) 46%, transparent 60%);
+      mask-image: linear-gradient(248deg, #000 34%, rgba(0, 0, 0, 0.55) 46%, transparent 60%);
+      -webkit-mask-size: 320% 140%;
+      mask-size: 320% 140%;
+      -webkit-mask-position: var(--mx) 50%;
+      mask-position: var(--mx) 50%;
+    }
+    .br-a4 {
+      top: -8vh;
+      right: -8vw;
+      width: min(88vw, 1520px);
+    }
+    .br-a6 {
+      bottom: 6vh;
+      right: -8vw;
+      width: min(80vw, 1360px);
     }
     .hero-copy {
       position: relative;
@@ -391,6 +423,12 @@
       transform: rotate(0deg) translateY(-8px);
       box-shadow: 0 4px 8px rgba(38, 34, 28, 0.1), 0 26px 44px -16px rgba(38, 34, 28, 0.32);
     }
+    .card-art img,
+    .card-postmark,
+    .card-meta .go { transition: transform 0.4s ease; }
+    .card:hover .card-art img { transform: scale(1.05); }
+    .card:hover .card-postmark { transform: rotate(3deg) scale(1.07); }
+    .card:hover .card-meta .go { transform: translateX(6px); }
     .card-art {
       position: relative;
       background: #fff;
@@ -465,25 +503,38 @@
     .night {
       background: var(--nacht);
       color: var(--nacht-ink);
-      padding: 130px 0;
+      padding: 150px 0;
       position: relative;
       overflow: hidden;
     }
+    .night-brush {
+      position: absolute;
+      left: -2%;
+      right: -2%;
+      top: 34px;
+      bottom: 34px;
+      background: var(--nacht);
+      -webkit-mask: url(assets/ink/brush-band.png) center / 100% 100% no-repeat;
+      mask: url(assets/ink/brush-band.png) center / 100% 100% no-repeat;
+      clip-path: inset(0 0 0 0);
+      z-index: 0;
+    }
     .night-squirrel {
       position: absolute;
-      top: 54px;
+      top: 74px;
       right: 6vw;
       width: min(19vw, 240px);
       filter: invert(1) brightness(1.35);
       opacity: 0.8;
       pointer-events: none;
+      z-index: 2;
     }
     .night-inner {
       position: relative;
       z-index: 2;
       max-width: 620px;
     }
-    .night .label { color: #e8a06a; }
+    .night .label { color: #e36d85; }
     .night h2 {
       font-family: var(--display);
       font-size: clamp(32px, 4vw, 52px);
@@ -502,9 +553,10 @@
       width: 5px;
       height: 5px;
       border-radius: 50%;
-      background: #e8a06a;
-      box-shadow: 0 0 10px 2px rgba(232, 160, 106, 0.5);
+      background: #e36d85;
+      box-shadow: 0 0 10px 2px rgba(227, 109, 133, 0.5);
       opacity: 0.8;
+      z-index: 2;
       animation: drift 7s ease-in-out infinite alternate;
     }
     .firefly:nth-child(2) { animation-duration: 9s; animation-delay: 1.2s; }
@@ -652,7 +704,7 @@
         width: 94vw;
         margin-bottom: -4vw;
       }
-      .hero-gulls { display: none; }
+      .hero-branches { display: none; }
       .hero-copy {
         margin-left: 0;
         padding-top: 24px;
@@ -717,10 +769,30 @@
   </nav>
 
   <header class="hero" id="hero">
-    <video class="hero-run ink" id="heroRun" muted playsinline preload="auto" poster="assets/ink/hero-scene-poster.webp" aria-label="Ink animation of a flying squirrel running along a branch, crouching at the tip ready to jump">
-      <source src="assets/ink/hero-scene.mp4" type="video/mp4">
-    </video>
-    <img class="hero-gulls ink" id="heroGulls" src="assets/ink/gulls.webp" alt="" aria-hidden="true">
+    <div class="hero-run" id="heroLeft" role="img" aria-label="Ink animation of a flying squirrel running along a branch; plum blossoms then open and its bushy tail keeps swaying">
+      <video class="hero-run-layer" id="heroRun" muted playsinline preload="auto" poster="assets/ink/hero-scene-poster.webp">
+        <source src="assets/ink/hero-scene.webm" type="video/webm">
+        <source src="assets/ink/hero-scene.mp4" type="video/mp4">
+      </video>
+      <video class="hero-run-layer" id="heroBloom" muted playsinline preload="auto">
+        <source src="assets/ink/bloom-left.webm" type="video/webm">
+        <source src="assets/ink/bloom-left.mp4" type="video/mp4">
+      </video>
+      <video class="hero-run-layer" id="heroIdle" muted playsinline loop preload="auto">
+        <source src="assets/ink/idle-left.webm" type="video/webm">
+        <source src="assets/ink/idle-left.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="hero-branches" aria-hidden="true">
+      <video class="hero-branch br-a4" id="brA4" muted playsinline preload="auto" poster="assets/ink/branch-a4.webp">
+        <source src="assets/ink/bloom-a4.webm" type="video/webm">
+        <source src="assets/ink/bloom-a4.mp4" type="video/mp4">
+      </video>
+      <video class="hero-branch br-a6" id="brA6" muted playsinline preload="auto" poster="assets/ink/branch-a6.webp">
+        <source src="assets/ink/bloom-a6.webm" type="video/webm">
+        <source src="assets/ink/bloom-a6.mp4" type="video/mp4">
+      </video>
+    </div>
     <canvas class="hero-particles" id="heroParticles" aria-hidden="true"></canvas>
     <div class="w">
       <div class="hero-copy" id="heroCopy">
@@ -734,7 +806,8 @@
     </div>
   </header>
 
-  <video class="glider ink" id="glider" muted loop playsinline preload="auto" aria-hidden="true">
+  <video class="glider" id="glider" muted loop playsinline preload="auto" aria-hidden="true">
+    <source src="assets/ink/wings-flap.webm" type="video/webm">
     <source src="assets/ink/wings-flap.mp4" type="video/mp4">
   </video>
 
@@ -805,6 +878,7 @@
     </section>
 
     <section class="night" aria-label="Night">
+      <div class="night-brush" aria-hidden="true"></div>
       <img class="night-squirrel" src="assets/ink/squirrel-wings-c.webp" alt="" aria-hidden="true">
       <span class="firefly" style="top: 22%; left: 58%;" aria-hidden="true"></span>
       <span class="firefly" style="top: 64%; left: 74%; opacity: 0.5;" aria-hidden="true"></span>
@@ -976,19 +1050,46 @@
       /* Akt 1 — Laden: der Ast wird freigelegt, dann läuft das Hörnchen ihn entlang (VACE-Video) */
       var heroRun = document.getElementById('heroRun');
 
-      gsap.set(heroRun, { '--mx': '100%' });
-      gsap.set('#heroGulls', { opacity: 0, x: 40 });
+      gsap.set('#heroLeft', { '--mx': '100%' });
       gsap.set('#heroSkyline', { opacity: 0, y: 24 });
       gsap.set('#heroCopy > *', { opacity: 0, y: 40 });
+      gsap.set('.hero-branch', { '--mx': '0%' });
 
       var intro = gsap.timeline({ defaults: { ease: 'power2.out' } });
       intro
-        .to(heroRun, { '--mx': '0%', duration: 2.4, ease: 'power2.inOut' }, 0.2)
+        .to('#heroLeft', { '--mx': '0%', duration: 2.4, ease: 'power2.inOut' }, 0.2)
+        .to('.hero-branch', { '--mx': '100%', duration: 2.4, ease: 'power2.inOut' }, 0.2)
         .call(function () { if (heroRun.play) heroRun.play().catch(function () {}); }, null, 1.5)
-        .to('#heroGulls', { opacity: 0.75, x: 0, duration: 1.4 }, 2.2)
         .to('#heroSkyline', { opacity: 0.9, y: 0, duration: 1.2 }, 2.4);
 
-      /* Video endet in der Absprung-Hocke an der Ast-Spitze — der Ruhezustand lädt zum Scrollen ein */
+      /* Akt 1b — der Lauf endet in der Hocke, geht nahtlos in die Blüte über, danach Dauerschleife mit wippendem Schwanz.
+         Weil jedes Video am Bildrand mit dem letzten Frame des vorigen anschließt, ist der harte Schnitt nahtlos.
+         Die untere Ebene wird erst ausgeblendet, wenn die nächste wirklich läuft (kein Multiply-Doppelbild, kein Frame-Blitz). */
+      var heroBloom = document.getElementById('heroBloom');
+      var heroIdle = document.getElementById('heroIdle');
+      var brA4v = document.getElementById('brA4');
+      var brA6v = document.getElementById('brA6');
+      var bloomStarted = false, idleStarted = false;
+      function playOnce(v) { if (v && v.play) { var q = v.play(); if (q && q.catch) q.catch(function () {}); } }
+      heroRun.addEventListener('ended', function () {
+        if (bloomStarted) return;
+        bloomStarted = true;
+        heroBloom.style.opacity = 1;
+        var p = heroBloom.play();
+        if (p && p.catch) p.catch(function () {});
+        heroBloom.addEventListener('playing', function () { heroRun.style.opacity = 0; }, { once: true });
+        playOnce(brA4v);   /* rechte Äste bloomen gleichzeitig mit links */
+        playOnce(brA6v);
+      });
+      heroBloom.addEventListener('ended', function () {
+        if (idleStarted) return;
+        idleStarted = true;
+        heroIdle.style.opacity = 1;
+        var p = heroIdle.play();
+        if (p && p.catch) p.catch(function () {});
+        heroIdle.addEventListener('playing', function () { heroBloom.style.opacity = 0; }, { once: true });
+        if (window.__feishuPetals) window.__feishuPetals(1);
+      });
 
       /* Akt 2 — Erster Scroll: Hero gepinnt, Text blendet ein */
       var mm = gsap.matchMedia();
@@ -997,13 +1098,16 @@
           scrollTrigger: {
             trigger: '#hero',
             start: 'top top',
-            end: '+=90%',
+            end: '+=110%',
             pin: true,
             scrub: 0.5
           }
         })
-          .to('#heroCopy > *', { opacity: 1, y: 0, stagger: 0.14, duration: 0.5, ease: 'power2.out' }, 0.05)
-          .to(heroRun, { xPercent: -4, duration: 0.5 }, 0.55);
+          /* Durch das Geäst: alle Äste werden größer (näher) und verblassen beim Scrollen — die Mitte lichtet sich */
+          .to('#brA4', { scale: 1.5, xPercent: 24, yPercent: -22, opacity: 0.05, duration: 1, ease: 'none' }, 0)
+          .to('#brA6', { scale: 1.5, xPercent: 24, yPercent: 22, opacity: 0.05, duration: 1, ease: 'none' }, 0)
+          .to('#heroLeft', { scale: 1.25, xPercent: -26, yPercent: 8, opacity: 0.05, duration: 1, ease: 'none' }, 0)
+          .to('#heroCopy > *', { opacity: 1, y: 0, stagger: 0.14, duration: 0.5, ease: 'power2.out' }, 0.15);
 
         /* Akt 3 — Gleitflug zur Sammlung */
         var glider = document.getElementById('glider');
@@ -1068,27 +1172,27 @@
         return function () {};
       });
 
-      /* Karten fallen auf den Tisch */
-      var rotations = [-1.6, 1.1, -0.8, 1.8];
+      /* Karten werden reingedealt — abwechselnd von links und rechts auf den Tisch geworfen */
+      var dealFrom = [-1, 1, -1, 1];
       gsap.from('.card', {
-        y: 70,
+        x: function (i) { return dealFrom[i % 4] * (window.innerWidth * 0.6 + 260); },
+        y: function (i) { return -70 - (i % 4) * 26; },
+        rotation: function (i) { return dealFrom[i % 4] * 24; },
         opacity: 0,
-        rotation: function (i) { return rotations[i % 4] * 5; },
-        duration: 0.8,
-        stagger: 0.13,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: '.cards', start: 'top 78%' }
+        duration: 0.6,
+        stagger: 0.16,
+        ease: 'back.out(1.1)',
+        clearProps: 'transform',
+        scrollTrigger: { trigger: '.cards', start: 'top 80%' }
       });
 
-      /* Nacht */
-      gsap.from('.night-inner > *', {
-        opacity: 0,
-        y: 34,
-        stagger: 0.15,
-        duration: 0.9,
-        ease: 'power2.out',
-        scrollTrigger: { trigger: '.night', start: 'top 65%' }
-      });
+      /* Nacht — der dunkle Balken wird mit einem Riesenpinsel quer aufgetragen, dann taucht der Inhalt in der Tinte auf */
+      gsap.timeline({ scrollTrigger: { trigger: '.night', start: 'top 72%' } })
+        .fromTo('.night-brush',
+          { clipPath: 'inset(0 100% 0 0)' },
+          { clipPath: 'inset(0 0% 0 0)', duration: 1.1, ease: 'power2.inOut' })
+        .from('.night-inner > *', { opacity: 0, y: 26, stagger: 0.14, duration: 0.7, ease: 'power2.out' }, 0.62)
+        .from('.night-squirrel', { opacity: 0, duration: 0.8, ease: 'power2.out' }, 0.75);
 
       /* Grundsätze: Stempel-Momente */
       document.querySelectorAll('.principle').forEach(function (p, i) {
@@ -1125,17 +1229,23 @@
       }
       sizeCanvas();
       window.addEventListener('resize', sizeCanvas);
-      for (var i = 0; i < 14; i++) {
+      var PETAL_COLORS = ['#cf223a', '#cf223a', '#c11f3a', '#db4d69', '#e792a6', '#26221c'];
+      var petalTarget = 0.28, petalBoost = 0.28, petalTick = 0;
+      /* Hook: nach der Blüte auf 1 rampen (window.__feishuPetals(1)) */
+      window.__feishuPetals = function (v) { petalTarget = Math.max(0, Math.min(1, v)); };
+      for (var i = 0; i < 26; i++) {
         parts.push({
-          x: Math.random() * 2000 % (canvas.width || 1200),
-          y: Math.random() * 2000 % (canvas.height || 800),
-          w: 3 + (i % 5),
-          vx: -(0.15 + (i % 7) * 0.06),
-          vy: 0.08 + (i % 5) * 0.05,
-          rot: (i * 37) % 360,
-          vr: 0.2 + (i % 3) * 0.15,
-          o: 0.1 + (i % 4) * 0.05,
-          red: i % 7 === 0
+          x: (i * 137) % (canvas.width || 1200),
+          y: (i * 223) % (canvas.height || 800),
+          s: 4 + (i % 4) * 1.7,
+          vy: 0.24 + (i % 5) * 0.12,
+          swayA: 12 + (i % 6) * 5,
+          swayP: ((i * 41) % 628) / 100,
+          swayS: 0.5 + (i % 4) * 0.25,
+          rot: (i * 47) % 360,
+          vr: (i % 2 ? 1 : -1) * (0.4 + (i % 3) * 0.25),
+          a: 0.32 + (i % 4) * 0.13,
+          c: PETAL_COLORS[i % PETAL_COLORS.length]
         });
       }
       var heroVisible = true;
@@ -1145,22 +1255,30 @@
         end: 'bottom top',
         onToggle: function (self) { heroVisible = self.isActive; }
       });
+      function drawPetal(s) {
+        ctx.beginPath();
+        ctx.moveTo(0, -s);
+        ctx.bezierCurveTo(s * 0.85, -s * 0.5, s * 0.62, s * 0.8, 0, s);
+        ctx.bezierCurveTo(-s * 0.62, s * 0.8, -s * 0.85, -s * 0.5, 0, -s);
+        ctx.closePath();
+        ctx.fill();
+      }
       gsap.ticker.add(function () {
         if (!heroVisible) return;
+        petalBoost += (petalTarget - petalBoost) * 0.02;
+        petalTick += 1;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         for (var j = 0; j < parts.length; j++) {
           var p = parts[j];
-          p.x += p.vx; p.y += p.vy; p.rot += p.vr;
-          if (p.x < -20) { p.x = canvas.width + 15; p.y = (p.y + 137) % canvas.height; }
-          if (p.y > canvas.height + 20) { p.y = -15; }
+          p.y += p.vy; p.rot += p.vr;
+          var sway = Math.sin(petalTick * 0.01 * p.swayS + p.swayP) * p.swayA;
+          if (p.y > canvas.height + 20) { p.y = -20; p.x = (p.x + 197) % (canvas.width || 1200); }
           ctx.save();
-          ctx.translate(p.x, p.y);
+          ctx.translate(p.x + sway, p.y);
           ctx.rotate(p.rot * Math.PI / 180);
-          ctx.globalAlpha = p.o;
-          ctx.fillStyle = p.red ? '#c94f1c' : '#26221c';
-          ctx.beginPath();
-          ctx.ellipse(0, 0, p.w, p.w * 0.45, 0, 0, Math.PI * 2);
-          ctx.fill();
+          ctx.globalAlpha = p.a * petalBoost;
+          ctx.fillStyle = p.c;
+          drawPetal(p.s);
           ctx.restore();
         }
       });
