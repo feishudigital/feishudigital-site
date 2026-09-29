@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Feishu Digital — the flying squirrel's collection</title>
-  <meta name="description" content="Feishu (飛鼠) means flying squirrel. Its collection: browser extensions and web tools from Hamburg that each solve one problem properly. No bloat, no tracking, EU-hosted.">
+  <meta name="description" content="Feishu (飛鼠) means flying squirrel. Its collection: browser extensions and web tools from Hamburg that each solve one problem properly. No bloat, no tracking, no account needed.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="canonical" href="https://feishudigital.de/">
   <meta name="theme-color" content="#f5f0e6">
@@ -435,11 +435,11 @@
       width: min(17vw, 220px);
       pointer-events: none;
     }
-    /* 2×2 wie ein Briefmarkenalbum — vier Karten in drei Spalten ließen eine allein stehen */
+    /* drei Marken nebeneinander wie auf einem Bogen */
     .cards {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 56px 48px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 40px 32px;
       align-items: start;
     }
     .card {
@@ -484,7 +484,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 250px;
+      height: 210px;
       overflow: hidden;
     }
     .card-art img {
@@ -520,7 +520,8 @@
       font-family: var(--display);
       font-size: 23px;
       font-weight: 600;
-      margin: 18px 0 6px;
+      line-height: 1.25;
+      margin: 18px 0 8px;
     }
     .card p {
       font-size: 16px;
@@ -530,6 +531,7 @@
     }
     .card-meta {
       display: flex;
+      gap: 10px;
       justify-content: space-between;
       align-items: center;
       margin-top: 16px;
@@ -542,6 +544,7 @@
       text-transform: uppercase;
       color: var(--stein);
     }
+    .card-meta > span:first-child { min-width: 0; }   /* Beschriftung bricht in sich um, der Pfeil bleibt rechts */
     .card-meta .go {
       color: var(--siegel);
       font-weight: 600;
@@ -866,7 +869,7 @@
     <div class="w">
       <div class="hero-copy" id="heroCopy">
         <h1 data-i18n="hero_h1_html" data-i18n-html>Software from Hamburg,<br>gathered <em>piece by piece</em>.</h1>
-        <p class="hero-sub" data-i18n="hero_sub_html" data-i18n-html>Feishu (<span class="zh" lang="zh-Hant">飛鼠</span>) means flying squirrel. This is its collection: browser extensions and web tools that each solve one problem properly. No bloat, no tracking, hosted in the EU.</p>
+        <p class="hero-sub" data-i18n="hero_sub_html" data-i18n-html>Feishu (<span class="zh" lang="zh-Hant">飛鼠</span>) means flying squirrel. This is its collection: browser extensions and web tools that each solve one problem properly. No bloat, no tracking, no account needed.</p>
         <a class="hero-cta" href="#collection" data-i18n="hero_cta">View the collection ↓</a>
       </div>
     </div>
@@ -882,7 +885,7 @@
         <div class="section-head">
           <span class="label" data-i18n="col_label">The Collection</span>
         </div>
-        <h2 style="font-family: var(--display); font-size: clamp(30px, 3.6vw, 46px); font-weight: 600;" data-i18n="col_h2">Four tools, gathered with care.</h2>
+        <h2 style="font-family: var(--display); font-size: clamp(30px, 3.6vw, 46px); font-weight: 600;" data-i18n="col_h2">Three tools, gathered with care.</h2>
         <p class="section-lede" data-i18n="col_lede">Each one exists because a real problem kept coming back. Nothing more, nothing less.</p>
 
         <div class="cards">
@@ -899,18 +902,6 @@
             </div>
           </a>
 
-          <a class="card" href="https://jveg.feishudigital.de" target="_blank" rel="noopener">
-            <div class="card-art">
-              <img class="ink" src="assets/ink/stamp-jveg.webp" width="600" height="738" loading="lazy" decoding="async" alt="">
-              <span class="card-postmark" aria-hidden="true">Hamburg<br>2026</span>
-            </div>
-            <h3>JVEG Rechner</h3>
-            <p data-i18n="card_jveg">Court-ready compensation claims under the German JVEG — for experts, interpreters and translators. PDF export.</p>
-            <div class="card-meta">
-              <span data-i18n="card_jveg_meta">Web app · Free + Pro</span>
-              <span class="go" aria-hidden="true">→</span>
-            </div>
-          </a>
 
           <a class="card" href="https://chromewebstore.google.com/detail/readability-scorer/cnpnapjocbjcjpmmbodjajihofochnhc" target="_blank" rel="noopener">
             <div class="card-art">
@@ -968,9 +959,9 @@
           <p data-i18n="pr1_p">Extensions process everything on your device. Nothing leaves your browser.</p>
         </div>
         <div class="principle">
-          <span class="stamp" aria-hidden="true">EU<br>hosted</span>
-          <h3 data-i18n="pr2_h">EU-hosted</h3>
-          <p data-i18n="pr2_p">Web app data lives in Frankfurt, Germany. Encrypted in transit and at rest.</p>
+          <span class="stamp" aria-hidden="true">No<br>account</span>
+          <h3 data-i18n="pr2_h">No account</h3>
+          <p data-i18n="pr2_p">No sign-up, no email address. Pro is unlocked with a license key.</p>
         </div>
         <div class="principle">
           <span class="stamp" aria-hidden="true">No<br>tracking</span>
@@ -1033,15 +1024,13 @@
           alt_glide: 'Tuschezeichnung eines Hörnchens, das mit Adlerflügeln gleitet',
           alt_curl: 'Tuschezeichnung eines eingerollt schlafenden Flughörnchens',
           hero_h1_html: 'Software aus Hamburg,<br>Stück für Stück <em>gesammelt</em>.',
-          hero_sub_html: 'Feishu (<span class="zh" lang="zh-Hant">飛鼠</span>) heißt Flughörnchen. Das hier ist seine Sammlung: Browser-Extensions und Web-Tools, die jeweils ein Problem richtig lösen. Kein Bloat, kein Tracking, gehostet in der EU.',
+          hero_sub_html: 'Feishu (<span class="zh" lang="zh-Hant">飛鼠</span>) heißt Flughörnchen. Das hier ist seine Sammlung: Browser-Extensions und Web-Tools, die jeweils ein Problem richtig lösen. Kein Bloat, kein Tracking, kein Konto nötig.',
           hero_cta: 'Zur Sammlung ↓',
           col_label: 'Die Sammlung',
-          col_h2: 'Vier Werkzeuge, mit Sorgfalt gesammelt.',
+          col_h2: 'Drei Werkzeuge, mit Sorgfalt gesammelt.',
           col_lede: 'Jedes existiert, weil ein echtes Problem immer wiederkam. Nicht mehr, nicht weniger.',
           card_arzt: 'Private Arztrechnung (GOÄ/GOZ) gegen die amtlichen Schwellenwerte prüfen. Ampel-Report als PDF.',
           card_arzt_meta: 'Web-App · Kostenlos',
-          card_jveg: 'Gerichtsfeste Vergütungsanträge nach JVEG — für Sachverständige, Dolmetscher und Übersetzer. PDF-Export.',
-          card_jveg_meta: 'Web-App · Free + Pro',
           card_read: 'Lesbarkeits-Analyse in Echtzeit für jeden Text im Browser. Sieben Formeln, Feedback pro Satz.',
           card_read_meta: 'Chrome-Extension · Free + Pro',
           card_chat: 'Ordner, Tags, Suche und Prompt-Vorlagen für ChatGPT-, Claude- und Gemini-Unterhaltungen.',
@@ -1053,8 +1042,8 @@
           pr_h2: 'Jedes Werkzeug trägt vier Stempel.',
           pr1_h: 'Local-first',
           pr1_p: 'Extensions verarbeiten alles auf deinem Gerät. Nichts verlässt den Browser.',
-          pr2_h: 'EU-gehostet',
-          pr2_p: 'Web-App-Daten liegen in Frankfurt. Verschlüsselt bei Übertragung und Speicherung.',
+          pr2_h: 'Kein Konto',
+          pr2_p: 'Keine Anmeldung, keine E-Mail-Adresse. Pro wird per Lizenzschlüssel freigeschaltet.',
           pr3_h: 'Kein Tracking',
           pr3_p: 'Keine Analytics, keine Pixel, keine Dritten. Es gibt schlicht keine Daten zu verkaufen.',
           pr4_h: 'Faire Preise',
