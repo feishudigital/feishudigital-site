@@ -7,10 +7,17 @@
   <meta name="description" content="Feishu (飛鼠) means flying squirrel. Its collection: browser extensions and web tools from Hamburg that each solve one problem properly. No bloat, no tracking, EU-hosted.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="canonical" href="https://feishudigital.de/">
+  <meta name="theme-color" content="#f5f0e6">
+  <link rel="preload" href="assets/fonts/Gambetta-Semibold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/newsreader-v26-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
   <meta property="og:title" content="Feishu Digital — the flying squirrel's collection">
   <meta property="og:description" content="Browser extensions and web tools from Hamburg that each solve one problem properly.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://feishudigital.de/">
+  <meta property="og:image" content="https://feishudigital.de/assets/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -93,8 +100,8 @@
       --papier: #f5f0e6;
       --papier-tief: #eae3d2;
       --tusche: #26221c;
-      --stein: #7a7264;
-      --siegel: #d42b47;
+      --stein: #6f675a;       /* 4.9:1 auf Papier (WCAG AA) */
+      --siegel: #c92643;      /* Blüten-Crimson, Farbton unverändert, 4.8:1 auf Papier */
       --nacht: #141824;
       --nacht-ink: #e8e4da;
       --linie: #d8cfbc;
@@ -127,6 +134,15 @@
       border-radius: 2px;
     }
 
+    /* Seitenwechsel zu den Rechtsseiten: neues Blatt schiebt sich drüber (gleiche Regel in legal.css) */
+    @view-transition { navigation: auto; }
+    ::view-transition-old(root) { animation: none; }
+    ::view-transition-new(root) { animation: sheet-in 0.55s cubic-bezier(0.22, 0.8, 0.24, 1); }
+    @keyframes sheet-in { from { transform: translateY(100%); } }
+    @media (prefers-reduced-motion: reduce) {
+      ::view-transition-new(root) { animation: none; }
+    }
+
     .w {
       max-width: 1140px;
       margin: 0 auto;
@@ -143,6 +159,23 @@
     }
 
     .ink { mix-blend-mode: multiply; }
+    img { height: auto; }   /* width/height-Attribute nur als Seitenverhältnis gegen Layout-Sprünge */
+
+    .skip-link {
+      position: absolute;
+      left: 16px;
+      top: -60px;
+      z-index: 100;
+      padding: 10px 16px;
+      background: var(--tusche);
+      color: var(--papier);
+      font-family: var(--ui);
+      font-size: 14px;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+    .skip-link:focus { top: 12px; }
+    [tabindex="-1"]:focus { outline: none; }
 
     /* ═══ Seal ═══ */
     .seal {
@@ -236,6 +269,7 @@
       font: inherit;
       transition: background 0.2s, color 0.2s;
     }
+    .lang-toggle button:focus-visible { outline-offset: -3px; }
     .lang-toggle button.active {
       background: var(--tusche);
       color: var(--papier);
@@ -257,17 +291,23 @@
       top: 8vh;
       left: 0;
       width: min(86vw, 1460px);
+      z-index: 2;      /* vor den rechten Aesten — bei Ueberlappung (schmale Screens) bleibt das Hoernchen vorn */
       pointer-events: none;
       --mx: 0%;
-      -webkit-mask-image: linear-gradient(112deg, #000 34%, rgba(0, 0, 0, 0.55) 46%, transparent 60%);
-      mask-image: linear-gradient(112deg, #000 34%, rgba(0, 0, 0, 0.55) 46%, transparent 60%);
-      -webkit-mask-size: 320% 140%;
-      mask-size: 320% 140%;
-      -webkit-mask-position: var(--mx) 50%;
-      mask-position: var(--mx) 50%;
+      /* zweite Ebene: der Stamm läuft unten aus wie trocknende Tusche statt an der Videokante abzubrechen */
+      -webkit-mask-image: linear-gradient(112deg, #000 34%, rgba(0, 0, 0, 0.55) 46%, transparent 60%), linear-gradient(#000 82%, transparent 99%);
+      mask-image: linear-gradient(112deg, #000 34%, rgba(0, 0, 0, 0.55) 46%, transparent 60%), linear-gradient(#000 82%, transparent 99%);
+      -webkit-mask-size: 320% 140%, 100% 100%;
+      mask-size: 320% 140%, 100% 100%;
+      -webkit-mask-position: var(--mx) 50%, 0 0;
+      mask-position: var(--mx) 50%, 0 0;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      -webkit-mask-composite: source-in;
+      mask-composite: intersect;
     }
     /* Lauf/Blüte/Idle liegen deckungsgleich; heroRun definiert die Box-Höhe, die anderen überlagern */
-    .hero-run-layer { display: block; width: 100%; }
+    .hero-run-layer { display: block; width: 100%; height: auto; }
     #heroRun { position: relative; }
     #heroBloom, #heroIdle {
       position: absolute;
@@ -395,10 +435,11 @@
       width: min(17vw, 220px);
       pointer-events: none;
     }
+    /* 2×2 wie ein Briefmarkenalbum — vier Karten in drei Spalten ließen eine allein stehen */
     .cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 40px 32px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 56px 48px;
       align-items: start;
     }
     .card {
@@ -419,7 +460,13 @@
     .card:nth-child(2) { transform: rotate(1.1deg); }
     .card:nth-child(3) { transform: rotate(-0.8deg); }
     .card:nth-child(4) { transform: rotate(1.8deg); }
-    .card:hover {
+    /* Fokus: die Stanz-Maske schneidet alles außerhalb ab, der Ring liegt deshalb innen */
+    .card:focus-visible {
+      outline: 2px solid var(--siegel);
+      outline-offset: -14px;
+    }
+    .card:hover,
+    .card:focus-visible {
       transform: rotate(0deg) translateY(-8px);
       box-shadow: 0 4px 8px rgba(38, 34, 28, 0.1), 0 26px 44px -16px rgba(38, 34, 28, 0.32);
     }
@@ -437,10 +484,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 210px;
+      height: 250px;
       overflow: hidden;
     }
     .card-art img {
+      width: auto;
       max-height: 100%;
       max-width: 100%;
       object-fit: contain;
@@ -503,36 +551,30 @@
     .night {
       background: var(--nacht);
       color: var(--nacht-ink);
-      padding: 150px 0;
+      padding: 70px 0;
       position: relative;
       overflow: hidden;
+      display: flex;
+      align-items: center;
     }
-    .night-brush {
+    /* Text relativ zur Sektionsbreite: der Strich ist full-bleed, sein satter Teil endet bei ~80 % */
+    .night > .w { width: 100%; max-width: none; padding: 0; }
+    .night-scene {
       position: absolute;
-      left: -2%;
-      right: -2%;
-      top: 34px;
-      bottom: 34px;
-      background: var(--nacht);
-      -webkit-mask: url(assets/ink/brush-band.png) center / 100% 100% no-repeat;
-      mask: url(assets/ink/brush-band.png) center / 100% 100% no-repeat;
-      clip-path: inset(0 0 0 0);
+      inset: 0;
+      width: 100%;
+      height: 100%;
       z-index: 0;
-    }
-    .night-squirrel {
-      position: absolute;
-      top: 74px;
-      right: 6vw;
-      width: min(19vw, 240px);
-      filter: invert(1) brightness(1.35);
-      opacity: 0.8;
       pointer-events: none;
-      z-index: 2;
+      display: block;
     }
     .night-inner {
       position: relative;
       z-index: 2;
-      max-width: 620px;
+      width: 30%;
+      max-width: 600px;
+      margin-left: 46%;       /* Text rechts vom Mond (Mitte 31 %), endet vor dem hellen Strich-Ende */
+      text-shadow: 0 2px 16px rgba(10, 12, 20, 0.85), 0 0 6px rgba(10, 12, 20, 0.7);
     }
     .night .label { color: #e36d85; }
     .night h2 {
@@ -546,7 +588,6 @@
       font-size: 18px;
       font-style: italic;
       color: #a9a493;
-      max-width: 480px;
     }
     .firefly {
       position: absolute;
@@ -556,6 +597,7 @@
       background: #e36d85;
       box-shadow: 0 0 10px 2px rgba(227, 109, 133, 0.5);
       opacity: 0.8;
+      filter: opacity(var(--ff, 1));   /* --ff kommt aus der Nacht-Choreografie: erst Strich, dann Glühwürmchen */
       z-index: 2;
       animation: drift 7s ease-in-out infinite alternate;
     }
@@ -579,8 +621,8 @@
     }
     .principle:last-child { border-bottom: 1px solid var(--linie); }
     .principle .stamp {
-      width: 54px;
-      height: 54px;
+      width: 62px;
+      height: 62px;
       border: 2.5px solid var(--siegel);
       border-radius: 6px;
       color: var(--siegel);
@@ -588,12 +630,13 @@
       align-items: center;
       justify-content: center;
       font-family: var(--ui);
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 600;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
       text-align: center;
       line-height: 1.3;
+      padding: 0 3px;
       transform: rotate(-5deg);
       opacity: 0.9;
     }
@@ -679,19 +722,8 @@
       position: absolute;
       inset: 0;
       pointer-events: none;
-      z-index: 3;
+      z-index: 1;    /* hinter dem Hoernchen (z2): Blaetter fallen HINTER dem Motiv, nie auf dem Koerper */
     }
-    .glider {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: min(16vw, 200px);
-      z-index: 8;
-      pointer-events: none;
-      opacity: 0;
-      will-change: transform;
-    }
-
     /* ═══ Mobile ═══ */
     @media (max-width: 860px) {
       .w { padding: 0 22px; }
@@ -718,8 +750,10 @@
         margin: 0 0 8px auto;
         display: block;
       }
-      .cards { gap: 28px 20px; }
+      .cards { grid-template-columns: minmax(0, 1fr); gap: 28px 20px; }
+      .card-art { height: 210px; }
       .night { padding: 90px 0; }
+      .night-inner { width: auto; margin-left: 0; padding: 0 22px; text-align: center; }
       .night-squirrel {
         width: 160px;
         top: auto;
@@ -737,16 +771,24 @@
       .footer-links { flex-wrap: wrap; gap: 14px; }
     }
 
+    /* mittlere Breiten: 30 % wären zu schmal für die Überschrift */
+    @media (min-width: 861px) and (max-width: 1199px) {
+      .night-inner { width: 42%; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       .fade-in { animation: none; opacity: 1; transform: none; }
+      .firefly { animation: none; }
       * { transition-duration: 0.01ms !important; }
     }
   </style>
 </head>
 <body>
 
-  <nav class="nav" id="nav" aria-label="Main">
+  <a class="skip-link" href="#main" data-i18n="skip">Skip to content</a>
+
+  <nav class="nav" id="nav" aria-label="Main" data-i18n-aria="aria_nav">
     <div class="w">
       <div class="nav-inner">
         <a href="/" class="brand">
@@ -759,9 +801,9 @@
             <a href="#principles" data-i18n="nav_principles">Principles</a>
             <a href="mailto:feishudigital@gmail.com" data-i18n="nav_contact">Contact</a>
           </div>
-          <div class="lang-toggle" role="group" aria-label="Language">
-            <button type="button" id="lang-en" class="active">EN</button>
-            <button type="button" id="lang-de">DE</button>
+          <div class="lang-toggle" role="group" aria-label="Language" data-i18n-aria="aria_lang">
+            <button type="button" id="lang-en" class="active" lang="en" aria-label="English" aria-pressed="true">EN</button>
+            <button type="button" id="lang-de" lang="de" aria-label="Deutsch" aria-pressed="false">DE</button>
           </div>
         </div>
       </div>
@@ -769,51 +811,73 @@
   </nav>
 
   <header class="hero" id="hero">
-    <div class="hero-run" id="heroLeft" role="img" aria-label="Ink animation of a flying squirrel running along a branch; plum blossoms then open and its bushy tail keeps swaying">
-      <video class="hero-run-layer" id="heroRun" muted playsinline preload="auto" poster="assets/ink/hero-scene-poster.webp">
+    <div class="hero-run" id="heroLeft" role="img" data-i18n-aria="aria_hero" aria-label="Ink animation of a flying squirrel running along a branch; plum blossoms then open and its bushy tail keeps swaying">
+      <video class="hero-run-layer" id="heroRun" width="832" height="480" muted playsinline preload="auto" poster="assets/ink/hero-scene-poster.webp">
         <source src="assets/ink/hero-scene.webm" type="video/webm">
         <source src="assets/ink/hero-scene.mp4" type="video/mp4">
       </video>
-      <video class="hero-run-layer" id="heroBloom" muted playsinline preload="auto">
+      <video class="hero-run-layer" id="heroBloom" muted playsinline preload="none">
         <source src="assets/ink/bloom-left.webm" type="video/webm">
         <source src="assets/ink/bloom-left.mp4" type="video/mp4">
       </video>
-      <video class="hero-run-layer" id="heroIdle" muted playsinline loop preload="auto">
+      <video class="hero-run-layer" id="heroIdle" muted playsinline loop preload="none">
         <source src="assets/ink/idle-left.webm" type="video/webm">
         <source src="assets/ink/idle-left.mp4" type="video/mp4">
       </video>
     </div>
     <div class="hero-branches" aria-hidden="true">
-      <video class="hero-branch br-a4" id="brA4" muted playsinline preload="auto" poster="assets/ink/branch-a4.webp">
+      <video class="hero-branch br-a4" id="brA4" muted playsinline preload="none" poster="assets/ink/branch-a4.webp">
         <source src="assets/ink/bloom-a4.webm" type="video/webm">
         <source src="assets/ink/bloom-a4.mp4" type="video/mp4">
       </video>
-      <video class="hero-branch br-a6" id="brA6" muted playsinline preload="auto" poster="assets/ink/branch-a6.webp">
+      <video class="hero-branch br-a6" id="brA6" muted playsinline preload="none" poster="assets/ink/branch-a6.webp">
         <source src="assets/ink/bloom-a6.webm" type="video/webm">
         <source src="assets/ink/bloom-a6.mp4" type="video/mp4">
       </video>
     </div>
+    <script>
+      /* Safari/iOS spielen WebM/VP9, zeigen aber dessen Alpha nicht; die deckenden mp4 zeigen Kastenkanten
+         und verdecken die Nachbaräste. Dort stattdessen echte Alpha-Bilder: Idle-Schleife als animiertes WebP,
+         rechte Äste im erblühten Endzustand. Die Videos bleiben (quellenlos, versteckt) für die Choreografie-Referenzen. */
+      (function () {
+        var ua = navigator.userAgent;
+        window.__noVp9Alpha = /AppleWebKit/.test(ua) && !/Chrome|Chromium|Edg|OPR|Android/.test(ua);
+        if (!window.__noVp9Alpha) return;
+        function still(v, src, cls, id) {
+          v.querySelectorAll('source').forEach(function (s) { s.remove(); });
+          v.removeAttribute('poster'); v.load(); v.style.display = 'none';
+          var img = new Image();
+          img.src = src; img.alt = ''; img.className = cls; img.decoding = 'async';
+          if (id) { v.removeAttribute('id'); img.id = id; }
+          v.parentNode.insertBefore(img, v.nextSibling);
+        }
+        var left = document.getElementById('heroLeft');
+        left.querySelectorAll('video').forEach(function (v, i) {
+          if (i === 0) still(v, 'assets/ink/idle-left-anim.webp', 'hero-run-layer');
+          else { v.querySelectorAll('source').forEach(function (s) { s.remove(); }); v.load(); v.style.display = 'none'; }
+        });
+        if (window.matchMedia('(min-width: 861px)').matches) {   // mobil sind die rechten Äste ausgeblendet
+          still(document.getElementById('brA4'), 'assets/ink/bloom-a4-end.webp', 'hero-branch br-a4', 'brA4');
+          still(document.getElementById('brA6'), 'assets/ink/bloom-a6-end.webp', 'hero-branch br-a6', 'brA6');
+        }
+      })();
+    </script>
     <canvas class="hero-particles" id="heroParticles" aria-hidden="true"></canvas>
     <div class="w">
       <div class="hero-copy" id="heroCopy">
         <h1 data-i18n="hero_h1_html" data-i18n-html>Software from Hamburg,<br>gathered <em>piece by piece</em>.</h1>
-        <p class="hero-sub" data-i18n="hero_sub_html" data-i18n-html>Feishu (<span class="zh">飛鼠</span>) means flying squirrel. This is its collection: browser extensions and web tools that each solve one problem properly. No bloat, no tracking, hosted in the EU.</p>
+        <p class="hero-sub" data-i18n="hero_sub_html" data-i18n-html>Feishu (<span class="zh" lang="zh-Hant">飛鼠</span>) means flying squirrel. This is its collection: browser extensions and web tools that each solve one problem properly. No bloat, no tracking, hosted in the EU.</p>
         <a class="hero-cta" href="#collection" data-i18n="hero_cta">View the collection ↓</a>
       </div>
     </div>
     <div class="hero-skyline">
-      <img class="ink" id="heroSkyline" src="assets/ink/skyline.webp" alt="" aria-hidden="true">
+      <img class="ink" id="heroSkyline" src="assets/ink/skyline.webp" width="1536" height="349" alt="" aria-hidden="true">
     </div>
   </header>
 
-  <video class="glider" id="glider" muted loop playsinline preload="auto" aria-hidden="true">
-    <source src="assets/ink/wings-flap.webm" type="video/webm">
-    <source src="assets/ink/wings-flap.mp4" type="video/mp4">
-  </video>
-
-  <main>
-    <section class="collection" id="collection">
-      <img class="collection-squirrel ink" id="collectionSquirrel" src="assets/ink/squirrel-wings-a.webp" alt="Ink drawing of a squirrel gliding with eagle wings">
+  <main id="main" tabindex="-1">
+    <section class="collection" id="collection" tabindex="-1">
+      <img class="collection-squirrel ink" id="collectionSquirrel" src="assets/ink/squirrel-wings-a.webp" width="900" height="920" loading="lazy" decoding="async" data-i18n-alt="alt_glide" alt="Ink drawing of a squirrel gliding with eagle wings">
       <div class="w">
         <div class="section-head">
           <span class="label" data-i18n="col_label">The Collection</span>
@@ -824,7 +888,7 @@
         <div class="cards">
           <a class="card" href="https://arztrechnung.feishudigital.de" target="_blank" rel="noopener">
             <div class="card-art">
-              <img class="ink" src="assets/ink/stamp-arzt.webp" alt="">
+              <img class="ink" src="assets/ink/stamp-arzt.webp" width="507" height="770" loading="lazy" decoding="async" alt="">
               <span class="card-postmark" aria-hidden="true">Hamburg<br>2026</span>
             </div>
             <h3>Arztrechnung Prüfer</h3>
@@ -837,7 +901,7 @@
 
           <a class="card" href="https://jveg.feishudigital.de" target="_blank" rel="noopener">
             <div class="card-art">
-              <img class="ink" src="assets/ink/stamp-jveg.webp" alt="">
+              <img class="ink" src="assets/ink/stamp-jveg.webp" width="600" height="738" loading="lazy" decoding="async" alt="">
               <span class="card-postmark" aria-hidden="true">Hamburg<br>2026</span>
             </div>
             <h3>JVEG Rechner</h3>
@@ -850,7 +914,7 @@
 
           <a class="card" href="https://chromewebstore.google.com/detail/readability-scorer/cnpnapjocbjcjpmmbodjajihofochnhc" target="_blank" rel="noopener">
             <div class="card-art">
-              <img class="ink" src="assets/ink/stamp-read.webp" alt="">
+              <img class="ink" src="assets/ink/stamp-read.webp" width="428" height="768" loading="lazy" decoding="async" alt="">
               <span class="card-postmark" aria-hidden="true">Hamburg<br>2026</span>
             </div>
             <h3>Readability Scorer</h3>
@@ -863,7 +927,7 @@
 
           <a class="card" href="https://chromewebstore.google.com/detail/ai-chat-organizer-%E2%80%94-folde/dccngnillnacgafjhlnlopfjedkonehg" target="_blank" rel="noopener">
             <div class="card-art">
-              <img class="ink" src="assets/ink/stamp-chat.webp" alt="">
+              <img class="ink" src="assets/ink/stamp-chat.webp" width="600" height="618" loading="lazy" decoding="async" alt="">
               <span class="card-postmark" aria-hidden="true">Hamburg<br>2026</span>
             </div>
             <h3>AI Chat Organizer</h3>
@@ -877,22 +941,21 @@
       </div>
     </section>
 
-    <section class="night" aria-label="Night">
-      <div class="night-brush" aria-hidden="true"></div>
-      <img class="night-squirrel" src="assets/ink/squirrel-wings-c.webp" alt="" aria-hidden="true">
+    <section class="night" aria-labelledby="nightTitle">
+      <canvas class="night-scene" aria-hidden="true"></canvas>
       <span class="firefly" style="top: 22%; left: 58%;" aria-hidden="true"></span>
-      <span class="firefly" style="top: 64%; left: 74%; opacity: 0.5;" aria-hidden="true"></span>
+      <span class="firefly" style="top: 66%; left: 14%; opacity: 0.5;" aria-hidden="true"></span>
       <span class="firefly" style="top: 38%; left: 86%; opacity: 0.65;" aria-hidden="true"></span>
       <div class="w">
         <div class="night-inner">
           <span class="label" data-i18n="night_label">After hours</span>
-          <h2 data-i18n="night_h2">Flying squirrels are nocturnal.</h2>
+          <h2 id="nightTitle" data-i18n="night_h2">Flying squirrels are nocturnal.</h2>
           <p data-i18n="night_p">This software is built at night — beside a day job, piece by piece, the way a squirrel builds its stash.</p>
         </div>
       </div>
     </section>
 
-    <section class="principles" id="principles">
+    <section class="principles" id="principles" tabindex="-1">
       <div class="w">
         <div class="section-head">
           <span class="label" data-i18n="pr_label">Sealed principles</span>
@@ -924,7 +987,7 @@
 
     <section class="rest">
       <div class="w">
-        <img class="rest-squirrel ink" src="assets/ink/squirrel-curl.webp" alt="Ink drawing of a flying squirrel curled up asleep">
+        <img class="rest-squirrel ink" src="assets/ink/squirrel-curl.webp" width="600" height="588" loading="lazy" decoding="async" data-i18n-alt="alt_curl" alt="Ink drawing of a flying squirrel curled up asleep">
         <h2 data-i18n="rest_h2">Time to rest.</h2>
         <p data-i18n="rest_p">Questions, feedback, or a problem that deserves a tool of its own?</p>
         <a class="rest-mail" href="mailto:feishudigital@gmail.com">feishudigital@gmail.com</a>
@@ -946,10 +1009,9 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/MotionPathPlugin.min.js" integrity="sha384-lgP6SKZeYZwy7E1FNW3+rGRX/lkJF6ipUUkyET+ZdEhxkLidIF0aewQq2LZaOJ2x" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js" integrity="sha384-O55L/6rhHr9CFvrxqv5luxOCcmVaBmETbZbJDP+Do8T0pztTACsFBD/IXCNkj7DV" crossorigin="anonymous"></script>
+  <script src="assets/js/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt"></script>
+  <script src="assets/js/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d"></script>
+  <script src="assets/js/lenis.min.js" integrity="sha384-O55L/6rhHr9CFvrxqv5luxOCcmVaBmETbZbJDP+Do8T0pztTACsFBD/IXCNkj7DV"></script>
   <script>
     (function () {
       var nav = document.getElementById('nav');
@@ -964,8 +1026,14 @@
           nav_collection: 'Sammlung',
           nav_principles: 'Grundsätze',
           nav_contact: 'Kontakt',
+          skip: 'Zum Inhalt springen',
+          aria_nav: 'Hauptnavigation',
+          aria_lang: 'Sprache',
+          aria_hero: 'Tusche-Animation: Ein Flughörnchen läuft einen Ast entlang, dann öffnen sich Pflaumenblüten und sein buschiger Schwanz wippt weiter',
+          alt_glide: 'Tuschezeichnung eines Hörnchens, das mit Adlerflügeln gleitet',
+          alt_curl: 'Tuschezeichnung eines eingerollt schlafenden Flughörnchens',
           hero_h1_html: 'Software aus Hamburg,<br>Stück für Stück <em>gesammelt</em>.',
-          hero_sub_html: 'Feishu (<span class="zh">飛鼠</span>) heißt Flughörnchen. Das hier ist seine Sammlung: Browser-Extensions und Web-Tools, die jeweils ein Problem richtig lösen. Kein Bloat, kein Tracking, gehostet in der EU.',
+          hero_sub_html: 'Feishu (<span class="zh" lang="zh-Hant">飛鼠</span>) heißt Flughörnchen. Das hier ist seine Sammlung: Browser-Extensions und Web-Tools, die jeweils ein Problem richtig lösen. Kein Bloat, kein Tracking, gehostet in der EU.',
           hero_cta: 'Zur Sammlung ↓',
           col_label: 'Die Sammlung',
           col_h2: 'Vier Werkzeuge, mit Sorgfalt gesammelt.',
@@ -1000,10 +1068,12 @@
         en: {}
       };
 
-      var defaults = {};
+      var defaults = {}, ariaDefaults = {}, altDefaults = {};
       document.querySelectorAll('[data-i18n]').forEach(function (el) {
         defaults[el.getAttribute('data-i18n')] = el.hasAttribute('data-i18n-html') ? el.innerHTML : el.textContent;
       });
+      document.querySelectorAll('[data-i18n-aria]').forEach(function (el) { ariaDefaults[el.getAttribute('data-i18n-aria')] = el.getAttribute('aria-label'); });
+      document.querySelectorAll('[data-i18n-alt]').forEach(function (el) { altDefaults[el.getAttribute('data-i18n-alt')] = el.getAttribute('alt'); });
 
       function setLang(lang) {
         document.documentElement.lang = lang;
@@ -1013,9 +1083,23 @@
           if (el.hasAttribute('data-i18n-html')) { el.innerHTML = value; }
           else { el.textContent = value; }
         });
-        document.getElementById('lang-en').classList.toggle('active', lang === 'en');
-        document.getElementById('lang-de').classList.toggle('active', lang === 'de');
+        document.querySelectorAll('[data-i18n-aria]').forEach(function (el) {
+          var k = el.getAttribute('data-i18n-aria');
+          el.setAttribute('aria-label', lang === 'de' ? (STRINGS.de[k] || ariaDefaults[k]) : ariaDefaults[k]);
+        });
+        document.querySelectorAll('[data-i18n-alt]').forEach(function (el) {
+          var k = el.getAttribute('data-i18n-alt');
+          el.setAttribute('alt', lang === 'de' ? (STRINGS.de[k] || altDefaults[k]) : altDefaults[k]);
+        });
+        ['en', 'de'].forEach(function (l) {
+          var b = document.getElementById('lang-' + l);
+          b.classList.toggle('active', lang === l);
+          b.setAttribute('aria-pressed', lang === l ? 'true' : 'false');
+        });
         try { localStorage.setItem('fd-lang', lang); } catch (e) {}
+        /* Textlänge ändert Höhen (Nacht-Szene misst sich mobil daran, ScrollTrigger-Pins) → neu vermessen */
+        window.dispatchEvent(new Event('resize'));
+        if (window.ScrollTrigger) ScrollTrigger.refresh();
       }
 
       document.getElementById('lang-en').addEventListener('click', function () { setLang('en'); });
@@ -1031,7 +1115,7 @@
       var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduced || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
-      gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+      gsap.registerPlugin(ScrollTrigger);
 
       var lenis = null;
       if (typeof Lenis !== 'undefined') {
@@ -1043,7 +1127,11 @@
       document.querySelectorAll('a[href^="#"]').forEach(function (a) {
         a.addEventListener('click', function (e) {
           var target = document.querySelector(a.getAttribute('href'));
-          if (target && lenis) { e.preventDefault(); lenis.scrollTo(target, { offset: -40 }); }
+          if (target && lenis) {
+            e.preventDefault();
+            history.pushState(null, '', a.getAttribute('href'));
+            lenis.scrollTo(target, { offset: -40, onComplete: function () { target.focus({ preventScroll: true }); } });
+          }
         });
       });
 
@@ -1070,6 +1158,24 @@
       var brA4v = document.getElementById('brA4');
       var brA6v = document.getElementById('brA6');
       var bloomStarted = false, idleStarted = false;
+      var wide = window.matchMedia('(min-width: 861px)').matches;
+      /* preload="none" im HTML: Blüte/Idle laden erst mit der Choreografie, die Äste nur dort, wo sie sichtbar sind */
+      function warm(v) { if (v && v.load && v.preload !== 'auto') { v.preload = 'auto'; v.load(); } }
+      warm(heroBloom); warm(heroIdle);
+      if (wide) { warm(brA4v); warm(brA6v); }
+      /* Safari-Pfad hat keine Video-Events: Blütenblätter nach dem Tusche-Einzug hochfahren */
+      if (window.__noVp9Alpha) gsap.delayedCall(3, function () { if (window.__feishuPetals) window.__feishuPetals(1); });
+      document.getElementById('heroCopy').addEventListener('focusin', function (e) {
+        gsap.to('#heroCopy > *', { opacity: 1, y: 0, duration: 0.3, overwrite: 'auto' });
+        /* Im gepinnten Hero scrollt der Browser ein fokussiertes Element nicht ins Bild → hinter das Pin-Ende scrollen */
+        var hero = document.getElementById('hero');
+        var st = ScrollTrigger.getAll().filter(function (t) { return t.pin === hero; })[0];
+        var r = e.target.getBoundingClientRect();
+        if (st && r.bottom > window.innerHeight - 20) {
+          var y = st.end + (r.bottom - window.innerHeight) + 60;
+          if (lenis) lenis.scrollTo(y); else window.scrollTo(0, y);
+        }
+      });
       function playOnce(v) { if (v && v.play) { var q = v.play(); if (q && q.catch) q.catch(function () {}); } }
       heroRun.addEventListener('ended', function () {
         if (bloomStarted) return;
@@ -1078,8 +1184,7 @@
         var p = heroBloom.play();
         if (p && p.catch) p.catch(function () {});
         heroBloom.addEventListener('playing', function () { heroRun.style.opacity = 0; }, { once: true });
-        playOnce(brA4v);   /* rechte Äste bloomen gleichzeitig mit links */
-        playOnce(brA6v);
+        if (wide) { playOnce(brA4v); playOnce(brA6v); }   /* rechte Äste bloomen gleichzeitig mit links */
       });
       heroBloom.addEventListener('ended', function () {
         if (idleStarted) return;
@@ -1109,90 +1214,238 @@
           .to('#heroLeft', { scale: 1.25, xPercent: -26, yPercent: 8, opacity: 0.05, duration: 1, ease: 'none' }, 0)
           .to('#heroCopy > *', { opacity: 1, y: 0, stagger: 0.14, duration: 0.5, ease: 'power2.out' }, 0.15);
 
-        /* Akt 3 — Gleitflug zur Sammlung */
-        var glider = document.getElementById('glider');
+        /* Akt 3 — das Hörnchen der Sammlung blendet ruhig ein */
         var landing = document.getElementById('collectionSquirrel');
         gsap.set(landing, { opacity: 0 });
-        gsap.set(glider, { opacity: 0 });
+        var landingTween = gsap.to(landing, {
+          opacity: 1, duration: 0.9, ease: 'power2.out',
+          scrollTrigger: { trigger: '#collection', start: 'top 80%', once: true }
+        });
 
-        function pathPoints() {
-          var l = landing.getBoundingClientRect();
-          var scrollY = window.scrollY;
-          var lx = l.left, ly = l.top + scrollY;
-          var startY = window.innerHeight * 1.05;
-          var startX = window.innerWidth * 0.78;
-          return [
-            { x: startX, y: startY },
-            { x: window.innerWidth * 0.30, y: startY + (ly - startY) * 0.45 },
-            { x: lx * 0.62, y: startY + (ly - startY) * 0.82 },
-            { x: lx, y: ly }
-          ];
-        }
-
-        var gliderTl = null;
-        function buildGlider() {
-          if (gliderTl) {
-            if (gliderTl.scrollTrigger) gliderTl.scrollTrigger.kill();
-            gliderTl.kill();
-          }
-          gliderTl = gsap.timeline({
-            scrollTrigger: {
-              trigger: '#collection',
-              start: 'top 92%',
-              once: true
-            },
-            onStart: function () { if (glider.play) glider.play().catch(function () {}); },
-            onComplete: function () { if (glider.pause) glider.pause(); }
-          })
-            .to(glider, { opacity: 1, duration: 0.25 }, 0)
-            .to(glider, {
-              motionPath: { path: pathPoints(), curviness: 1.4 },
-              rotation: 8,
-              ease: 'power1.inOut',
-              duration: 2.6
-            }, 0)
-            .to(glider, { opacity: 0, duration: 0.35 }, 2.25)
-            .to(landing, { opacity: 1, duration: 0.45 }, 2.25);
-        }
-        if (document.readyState === 'complete') {
-          setTimeout(buildGlider, 50);
-        } else {
-          window.addEventListener('load', function () { setTimeout(buildGlider, 50); });
-        }
-
-        return function () { if (gliderTl && gliderTl.scrollTrigger) gliderTl.scrollTrigger.kill(); };
+        return function () { if (landingTween.scrollTrigger) landingTween.scrollTrigger.kill(); };
       });
 
       mm.add('(max-width: 860px)', function () {
         gsap.to('#heroCopy > *', {
           opacity: 1, y: 0, stagger: 0.12, duration: 0.8, ease: 'power2.out', delay: 2.8
         });
-        gsap.set('#glider', { display: 'none' });
         gsap.set('#collectionSquirrel', { opacity: 1 });
         return function () {};
       });
 
-      /* Karten werden reingedealt — abwechselnd von links und rechts auf den Tisch geworfen */
-      var dealFrom = [-1, 1, -1, 1];
-      gsap.from('.card', {
-        x: function (i) { return dealFrom[i % 4] * (window.innerWidth * 0.6 + 260); },
-        y: function (i) { return -70 - (i % 4) * 26; },
-        rotation: function (i) { return dealFrom[i % 4] * 24; },
-        opacity: 0,
-        duration: 0.6,
-        stagger: 0.16,
-        ease: 'back.out(1.1)',
-        clearProps: 'transform',
-        scrollTrigger: { trigger: '.cards', start: 'top 80%' }
+      /* Karten werden reingedealt — abwechselnd von links und rechts auf den Tisch geworfen.
+         Reihe für Reihe, sobald sie ins Bild kommt: ein Pin des ganzen 2×2-Albums wäre höher als der Viewport. */
+      var dealFrom = [-1, 1], cardsShown = false;
+      gsap.set('.card', { opacity: 0 });
+      document.querySelector('.cards').addEventListener('focusin', function () {
+        if (cardsShown) return;
+        cardsShown = true;
+        gsap.set('.card', { opacity: 1 });
+      });
+      ScrollTrigger.batch('.card', {
+        start: 'top 82%',
+        once: true,
+        onEnter: function (batch) {
+          if (cardsShown) return;
+          gsap.set(batch, { opacity: 1 });
+          gsap.from(batch, {
+            x: function (i) { return dealFrom[i % 2] * (window.innerWidth * 0.6 + 260); },
+            y: function (i) { return -70 - i * 26; },
+            rotation: function (i) { return dealFrom[i % 2] * 24; },
+            opacity: 0,
+            duration: 0.72,
+            stagger: 0.19,
+            ease: 'back.out(1.1)',
+            clearProps: 'transform'
+          });
+        }
       });
 
-      /* Nacht — der dunkle Balken wird mit einem Riesenpinsel quer aufgetragen, dann taucht der Inhalt in der Tinte auf */
-      gsap.timeline({ scrollTrigger: { trigger: '.night', start: 'top 72%' } })
-        .fromTo('.night-brush',
-          { clipPath: 'inset(0 100% 0 0)' },
-          { clipPath: 'inset(0 0% 0 0)', duration: 1.1, ease: 'power2.inOut' })
-        .from('.night-inner > *', { opacity: 0, y: 26, stagger: 0.14, duration: 0.7, ease: 'power2.out' }, 0.62)
-        .from('.night-squirrel', { opacity: 0, duration: 0.8, ease: 'power2.out' }, 0.75);
+      /* Nacht — Tusche-Choreografie: der Pinsel malt die Nacht, der Mond tritt hervor, das Hörnchen blutet davor ein */
+      (function () {
+        var cv = document.querySelector('.night-scene');
+        if (!cv) return;
+        var ctx = cv.getContext('2d');
+        var sec = cv.closest('.night');
+        var inner = sec.querySelector('.night-inner');
+        var PAPER = getComputedStyle(document.body).backgroundColor || '#f5f0e6';
+        var NIGHT = { img: null, meta: { frames: 28, cols: 7, fw: 1120, fh: 387 } };
+        var MOON = { img: null };
+        var SQ = { img: null, meta: { frames: 100, cols: 10, fw: 400, fh: 397 } };
+        var FLAP = { v: null, k: 0, vis: false };   // k = Blend Tinte->Video, laeuft ZEITbasiert (nicht am Scroll)
+        var FLAP_AT = 0.94;                          // Schwelle: Einbluten fertig -> Video uebernimmt frei
+        var W = 0, H = 0, DPR = Math.min(2, window.devicePixelRatio || 1), loaded = false, prog = 0;
+
+        var clamp = function (x, a, b) { return Math.max(a, Math.min(b, x)); };
+        var c01 = function (x) { return clamp(x, 0, 1); };
+        var eo = function (x) { return 1 - Math.pow(1 - x, 2.2); };
+        var sub = function (t, a, b) { return c01((t - a) / (b - a)); };
+
+        /* Schmal (Handy): full-bleed wäre ein dünnes Band, der helle Text stünde auf Papier.
+           Dort füllt der Strich die Höhe ("cover", Enden laufen seitlich raus), Mond oben, Text darunter im Dunkeln. */
+        var narrow = false, moonTop = 0, deskSc = 1;
+        function narrowDisc() { return Math.min(W * 0.42, 170); }
+
+        function size() {
+          W = sec.offsetWidth;
+          narrow = W <= 860;   // gleiche Grenze wie die Mobil-Media-Query
+          if (narrow) {
+            // dunkler Kern = mittlere 66 % der Strichhöhe; Mond + Text müssen hineinpassen
+            var disc = narrowDisc(), textH = inner ? inner.offsetHeight : 240;
+            var need = disc + 48 + textH + 72;
+            var h = Math.ceil(need / 0.66);
+            moonTop = Math.round(h * 0.17 + 24);
+            sec.style.minHeight = h + 'px';
+            sec.style.padding = '0';
+            sec.style.alignItems = 'flex-start';
+            if (inner) inner.style.marginTop = (moonTop + disc + 24) + 'px';
+          } else {
+            // Strich full-bleed; nur wenn der Text höher ist als der dunkle Kern (66 %), wächst er mit (Enden laufen seitlich raus)
+            var tH = inner ? inner.offsetHeight : 0;
+            deskSc = Math.max(W / NIGHT.meta.fw, (tH + 90) / (NIGHT.meta.fh * 0.66));
+            // Sektion mind. so hoch wie der Strich -> oben/unten wird nichts abgeschnitten
+            sec.style.minHeight = Math.ceil(NIGHT.meta.fh * deskSc) + 'px';
+            sec.style.padding = sec.style.alignItems = '';
+            if (inner) inner.style.marginTop = '';
+          }
+          H = sec.offsetHeight;
+          cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+          cv.style.width = W + 'px'; cv.style.height = H + 'px';
+          ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+          if (loaded) render(prog);
+        }
+
+        // Strich full-bleed in der Breite (l/r laeuft durch), vertikal zentriert:
+        // a1s fransige Ober-/Unterkante bleibt sichtbar, das Papier scheint oben/unten durch.
+        function strokeBlit(o, frame) {
+          var m = o.meta, f = clamp(Math.round(frame), 0, m.frames - 1);
+          var col = f % m.cols, row = (f / m.cols) | 0;
+          if (narrow) {
+            var ch = H, cw = ch * m.fw / m.fh;
+            ctx.drawImage(o.img, col * m.fw, row * m.fh, m.fw, m.fh, (W - cw) / 2, 0, cw, ch);
+            return;
+          }
+          var dw = m.fw * deskSc, dh = m.fh * deskSc;
+          ctx.drawImage(o.img, col * m.fw, row * m.fh, m.fw, m.fh, (W - dw) / 2, (H - dh) / 2, dw, dh);
+        }
+
+        function render(t) {
+          prog = t;
+          ctx.clearRect(0, 0, W, H);
+          ctx.fillStyle = PAPER; ctx.fillRect(0, 0, W, H);       // Papiergrund, wird von der Nacht uebermalt
+          var p1 = sub(t, 0, 0.34), p2 = sub(t, 0.32, 0.66), p3 = sub(t, 0.62, 0.94), pT = sub(t, 0.80, 1);
+          if (p1 > 0 && NIGHT.img) strokeBlit(NIGHT, eo(p1) * (NIGHT.meta.frames - 1));
+          // Strich-Band (dunkel) = zentrale 66% der full-bleed-Hoehe; Mond + Hoernchen stehen links im satten Teil
+          var bandH = NIGHT.meta.fh * deskSc * 0.66;
+          var mcx = W * 0.31, mcy = H * 0.5, disc = Math.min(bandH * 0.82, W * 0.28);
+          if (narrow) { disc = narrowDisc(); mcx = W * 0.5; mcy = moonTop + disc / 2; }
+          var moonW = disc / 0.621;
+          if (p2 > 0 && MOON.img) {
+            var e = eo(p2); ctx.save();
+            ctx.globalAlpha = e; ctx.filter = 'blur(' + ((1 - e) * 16).toFixed(2) + 'px)';
+            var s = moonW * (1 + (1 - e) * 0.05);
+            ctx.drawImage(MOON.img, mcx - s / 2, mcy - s / 2, s, s);
+            ctx.restore();
+          }
+          if (p3 > 0 && SQ.img) {
+            var m = SQ.meta, sw = disc * 0.64, sh = sw * (m.fh / m.fw);
+            var sx = mcx - sw / 2, sy = mcy - sh / 2 + sh * 0.02;
+            if (FLAP.k < 1) {
+              var f = clamp(Math.round(eo(p3) * (m.frames - 1)), 0, m.frames - 1), col = f % m.cols, row = (f / m.cols) | 0;
+              ctx.drawImage(SQ.img, col * m.fw, row * m.fh, m.fw, m.fh, sx, sy, sw, sh);
+            }
+            if (FLAP.k > 0 && FLAP.v && FLAP.v.readyState >= 2) {
+              /* Video-Subjekt deckungsgleich auf das eingeblutete Hoernchen (Konstanten aus den Alpha-Bounding-Boxen) */
+              var vw = sw * (0.760 / 0.4858);
+              var scx = sx + 0.4738 * sw, scy = sy + 0.4584 * sh;
+              ctx.globalAlpha = FLAP.k;
+              ctx.drawImage(FLAP.v, scx - vw / 2, scy - vw / 2, vw, vw);
+              ctx.globalAlpha = 1;
+            }
+          }
+          if (inner) inner.style.opacity = eo(pT).toFixed(3);
+          sec.style.setProperty('--ff', sub(t, 0.24, 0.4).toFixed(3));
+        }
+
+        var raf = 0;
+        function play(dur) {
+          cancelAnimationFrame(raf);
+          var t0 = null;
+          function step(now) {
+            if (t0 === null) t0 = now;
+            var k = c01((now - t0) / dur); render(k);
+            if (k < 1) raf = requestAnimationFrame(step);
+          }
+          raf = requestAnimationFrame(step);
+        }
+
+        function loadImg(src) {
+          return new Promise(function (res, rej) { var i = new Image(); i.onload = function () { res(i); }; i.onerror = function () { rej(src); }; i.src = src; });
+        }
+        window.addEventListener('resize', size);
+
+        /* Fluegelschlag-Video (VP9 mit Alpha) — ohne Support bleibt einfach das Tinte-Endbild stehen */
+        function loadFlap() {
+          if (window.__noVp9Alpha) return;   // Safari/iOS: Tinte-Endbild bleibt stehen statt Kasten über dem Mond
+          var v = document.createElement('video');
+          if (!v.canPlayType || !v.canPlayType('video/webm; codecs="vp9"')) return;
+          v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'auto';
+          v.addEventListener('canplay', function () { FLAP.v = v; });
+          v.src = 'assets/ink/squirrel-flap.webm'; v.load();
+        }
+        /* Uebergang Tinte->Video: k laeuft zeitbasiert zum Ziel (~0.5s). Ab der Schwelle spielt das Video
+           frei (nicht am Scroll); Zurueckscrollen blendet zurueck und die Tinte scrubbt wieder rueckwaerts. */
+        window.__nightDebug = function () {
+          return { loaded: loaded, prog: +prog.toFixed(3), k: +FLAP.k.toFixed(3), vis: FLAP.vis,
+                   video: !!FLAP.v, readyState: FLAP.v ? FLAP.v.readyState : -1,
+                   paused: FLAP.v ? FLAP.v.paused : null, time: FLAP.v ? +FLAP.v.currentTime.toFixed(2) : null };
+        };
+        gsap.ticker.add(function (t, dt) {
+          if (!loaded || !FLAP.v) return;
+          /* Sichtbarkeit direkt am Element messen — ein zweiter ScrollTrigger rechnet auf dem
+             gepinnten Element falsche Grenzen (Pin-Spacer wird nicht beruecksichtigt) */
+          if (!FLAP.vis) { if (!FLAP.v.paused) FLAP.v.pause(); return; }
+          var target = prog >= FLAP_AT ? 1 : 0;
+          var moving = FLAP.k !== target;
+          if (moving) FLAP.k = clamp(FLAP.k + (target ? 1 : -1) * dt / 500, 0, 1);
+          if (FLAP.k > 0 && FLAP.v.paused) FLAP.v.play().catch(function () {});
+          else if (FLAP.k === 0 && !FLAP.v.paused) FLAP.v.pause();
+          if (moving || FLAP.k > 0) render(prog);
+        });
+
+        new IntersectionObserver(function (es) { FLAP.vis = es[0].isIntersecting; }).observe(sec);
+
+        // Scrubbing: die Nacht malt sich an der Scroll-Position; Sektion bleibt dabei zentriert gepinnt.
+        // Bis die Bilder da sind, bleibt die CSS-Fassung (dunkle Sektion + Text) stehen.
+        size();
+        ScrollTrigger.create({
+          trigger: '.night', start: 'center center', end: '+=1400',
+          pin: true, scrub: 0.8,
+          onUpdate: function (self) { prog = self.progress; if (loaded) render(prog); }
+        });
+
+        function startNight() {
+          loadFlap();
+          Promise.all([
+            loadImg('assets/ink/sprite_night.webp'),
+            loadImg('assets/ink/moonT_A.webp'),
+            loadImg('assets/ink/sprite_core.webp')
+          ]).then(function (r) {
+            NIGHT.img = r[0]; MOON.img = r[1]; SQ.img = r[2];
+            loaded = true; sec.style.background = PAPER; size();
+            render(prog);
+          }).catch(function (src) {
+            console.warn('night-scene: Asset fehlgeschlagen —', src);
+            cv.style.display = 'none';           // Fallback: dunkle Sektion + Text bleiben
+          });
+        }
+        if ('IntersectionObserver' in window) {
+          var nearIO = new IntersectionObserver(function (es) {
+            if (es[0].isIntersecting) { nearIO.disconnect(); startNight(); }
+          }, { rootMargin: '150% 0px' });
+          nearIO.observe(sec);
+        } else startNight();
+      })();
 
       /* Grundsätze: Stempel-Momente */
       document.querySelectorAll('.principle').forEach(function (p, i) {
@@ -1253,7 +1506,10 @@
         trigger: '#hero',
         start: 'top bottom',
         end: 'bottom top',
-        onToggle: function (self) { heroVisible = self.isActive; }
+        onToggle: function (self) {
+          heroVisible = self.isActive;
+          if (idleStarted && !window.__noVp9Alpha) { if (self.isActive) playOnce(heroIdle); else heroIdle.pause(); }
+        }
       });
       function drawPetal(s) {
         ctx.beginPath();

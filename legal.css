@@ -1,0 +1,167 @@
+/* Rechtsseiten (Impressum, Privacy, Terms, Refund) — gleiche Tokens und Schriften wie index.html,
+   alles selbst gehostet (keine Drittanbieter). */
+
+@font-face {
+  font-family: 'Gambetta';
+  src: url('assets/fonts/Gambetta-Semibold.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Newsreader';
+  src: url('assets/fonts/newsreader-v26-latin-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Newsreader';
+  src: url('assets/fonts/newsreader-v26-latin-500.woff2') format('woff2');
+  font-weight: 500 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Switzer';
+  src: url('assets/fonts/Switzer-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Switzer';
+  src: url('assets/fonts/Switzer-Semibold.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+
+:root {
+  --papier: #f5f0e6;
+  --papier-tief: #eae3d2;
+  --tusche: #26221c;
+  --stein: #6f675a;
+  --siegel: #c92643;
+  --linie: #d8cfbc;
+  --display: 'Gambetta', Georgia, serif;
+  --body: 'Newsreader', Georgia, serif;
+  --ui: 'Switzer', system-ui, sans-serif;
+}
+
+/* Seitenwechsel: das neue Blatt schiebt sich über das alte (Chrome/Edge; andere Browser wechseln normal) */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: none; }
+::view-transition-new(root) { animation: sheet-in 0.55s cubic-bezier(0.22, 0.8, 0.24, 1); }
+@keyframes sheet-in { from { transform: translateY(100%); } }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-new(root) { animation: none; }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--tusche);
+  background: var(--papier);
+  -webkit-font-smoothing: antialiased;
+}
+.container { max-width: 680px; margin: 0 auto; padding: 36px 24px 88px; }
+
+.nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 22px;
+  margin-bottom: 64px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--linie);
+  font-family: var(--ui);
+  font-size: 14px;
+}
+.nav a { color: var(--stein); text-decoration: none; transition: color 0.2s; }
+.nav a:hover { color: var(--tusche); }
+.nav a.active { color: var(--tusche); font-weight: 600; }
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-right: auto;
+  font-family: var(--display);
+  font-size: 19px;
+  font-weight: 600;
+}
+.nav .nav-brand { color: var(--tusche); }
+.seal {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--siegel);
+  border-radius: 4px;
+  color: var(--siegel);
+  font-family: var(--ui);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.05;
+  transform: rotate(-4deg);
+  flex-shrink: 0;
+}
+
+h1 {
+  font-family: var(--display);
+  font-size: clamp(34px, 6vw, 46px);
+  font-weight: 600;
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+.subtitle {
+  font-family: var(--ui);
+  font-size: 14px;
+  color: var(--stein);
+  margin-bottom: 44px;
+}
+h2 {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 40px 0 10px;
+}
+p { margin-bottom: 12px; }
+ul { margin: 0 0 14px 22px; }
+li { margin-bottom: 6px; }
+li::marker { color: var(--siegel); }
+strong { font-weight: 600; }
+a { color: var(--siegel); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+a:focus-visible { outline: 2px solid var(--siegel); outline-offset: 3px; border-radius: 2px; }
+
+/* Hinweise wie ein eingelegter Zettel: getöntes Papier; Warnungen tragen zusätzlich einen Siegelrahmen */
+.callout,
+.callout-warn {
+  background: var(--papier-tief);
+  padding: 18px 22px;
+  margin: 26px 0;
+  font-size: 16px;
+  border-radius: 3px;
+}
+.callout-warn {
+  background: transparent;
+  border: 1.5px solid var(--siegel);
+}
+.callout p:last-child,
+.callout-warn p:last-child { margin-bottom: 0; }
+
+.footer-line {
+  margin-top: 64px;
+  padding-top: 20px;
+  border-top: 1px solid var(--linie);
+  font-family: var(--ui);
+  font-size: 13px;
+  color: var(--stein);
+}
+
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .nav { gap: 16px; margin-bottom: 44px; }
+  .nav-brand { width: 100%; margin-bottom: 4px; }
+}
