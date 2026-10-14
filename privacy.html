@@ -22,7 +22,7 @@
     <main>
 
     <h1>Privacy Policy</h1>
-    <p class="subtitle">Last updated: October 13, 2026</p>
+    <p class="subtitle">Last updated: October 14, 2026</p>
 
     <div class="callout">
       We believe in minimal data collection. Our browser extensions process data locally
@@ -40,6 +40,7 @@
     <ul>
       <li><strong>Arztrechnung Pr&uuml;fer</strong> &mdash; Free web app for checking medical bills (GO&Auml;/GOZ)</li>
       <li><strong>Stationery Editor</strong> &mdash; Online editor for the printable stationery sold in our Etsy shop</li>
+      <li><strong>Digital Invitations</strong> &mdash; Interactive online invitations with RSVP, sold in our Etsy shop</li>
       <li><strong>JVEG Rechner</strong> &mdash; Web app for JVEG compensation claims</li>
       <li><strong>Readability Scorer</strong> &mdash; Chrome Extension for readability analysis</li>
       <li><strong>AI Chat Organizer</strong> &mdash; Chrome Extension for organizing AI conversations</li>
@@ -77,6 +78,33 @@
       <li>Fonts and program files are served from our own host, not from external font or script services</li>
       <li>Hosted on Cloudflare Pages, which may collect basic server logs (IP address, browser type)</li>
     </ul>
+    <p><strong>Digital Invitations (edit.feishudigital.de/einladung, invitation links /e/&hellip;):</strong></p>
+    <p>For couples who create an invitation:</p>
+    <ul>
+      <li>Before you publish, your draft is saved only in your browser&rsquo;s local storage on your device</li>
+      <li>To publish, you enter your Etsy order number and your email address. We check the order number with Etsy through Etsy&rsquo;s API (for our own shop only) to confirm the purchase. We store the order number so that each order can be activated once; we do not store the other order details</li>
+      <li>Your email address is used to send you login links and to identify your account. Login links are sent through Resend (see section 5)</li>
+      <li>After you log in, we set one strictly necessary cookie that keeps you logged in for up to 90 days. We do not use cookies for analytics or advertising</li>
+      <li>Your invitation (texts, design choices, wedding date) and photos are stored on our server so that your guests can see them. Photos are made smaller in your browser before they are uploaded</li>
+      <li>Your account and invitation are kept until you ask us to delete them: email us at the address below</li>
+      <li>Legal basis: performance of our contract with you (Art. 6(1)(b) GDPR)</li>
+    </ul>
+    <p>For guests who reply to an invitation:</p>
+    <ul>
+      <li>Opening an invitation link does not require any personal data. If you reply, we store your name, whether you attend, the number and names of the people coming with you, meal choices, a song wish, a note to the couple and answers to the couple&rsquo;s own questions &mdash; whatever the couple asks for and you fill in</li>
+      <li>Allergies and dietary needs can be health data. They are only stored if you tick the consent box (Art. 9(2)(a) GDPR). You can withdraw your consent at any time by changing your reply and emptying the field, or by contacting us</li>
+      <li>Your reply is stored encrypted (AES-256) and can only be viewed by the couple who sent the invitation, after they log in. We do not use it for any other purpose</li>
+      <li>All replies are deleted automatically 90 days after the wedding date. The couple can delete them earlier</li>
+      <li>So that you can change your reply later, your browser keeps a copy of your reply and a key for it in local storage on your device. Clearing your browser data removes it</li>
+      <li>Legal basis: handling the reply you send to the couple (Art. 6(1)(b) and (f) GDPR); for allergies and dietary needs your consent (Art. 9(2)(a) GDPR)</li>
+    </ul>
+    <p>For everyone:</p>
+    <ul>
+      <li>Invitation data, photos and replies are stored in a Cloudflare D1 database restricted to the EU (EU jurisdiction: stored and processed within the EU)</li>
+      <li>To prevent abuse such as guessing order numbers or sending mass replies, we keep a one-way hash of your IP address for at most 24 hours. We do not store IP addresses in plain text</li>
+      <li>When an invitation link is shared, apps such as WhatsApp may show a preview with the couple&rsquo;s names, the date and a picture of the envelope</li>
+      <li>Hosted on Cloudflare, which may collect basic server logs (IP address, browser type)</li>
+    </ul>
     <p><strong>Web Apps with Accounts (JVEG Rechner):</strong></p>
     <ul>
       <li>Account data (email, name) for authentication</li>
@@ -103,7 +131,9 @@
       <li><strong>Lemon Squeezy</strong> &mdash; Payment processing and license management</li>
       <li><strong>Supabase</strong> &mdash; Database and authentication for web apps (EU servers, Frankfurt)</li>
       <li><strong>GitHub Pages</strong> &mdash; Static website hosting</li>
-      <li><strong>Cloudflare Pages</strong> &mdash; Static web app hosting</li>
+      <li><strong>Cloudflare</strong> (Cloudflare, Inc.) &mdash; Web app hosting (Pages and Functions) and the database for Digital Invitations (D1, restricted to the EU)</li>
+      <li><strong>Resend</strong> (Resend, Inc., USA) &mdash; Sending login emails for Digital Invitations. Emails are sent from Resend&rsquo;s EU region (Ireland); Resend may store sending records in the USA. Resend is certified under the EU-U.S. Data Privacy Framework and uses Standard Contractual Clauses</li>
+      <li><strong>Etsy</strong> (Etsy, Inc.) &mdash; Checking order numbers for Digital Invitations through Etsy&rsquo;s API (our own shop only)</li>
       <li><strong>Fly.io</strong> &mdash; Web application hosting (Frankfurt, Germany)</li>
       <li><strong>Bunny Fonts</strong> &mdash; GDPR-compliant font delivery (no Google Fonts)</li>
     </ul>
@@ -125,6 +155,7 @@
       Browser extension data (settings, folders, tags, cached conversation titles) is stored
       locally on your device using the browser&rsquo;s storage API and never transmitted to our servers.
       Web application data is stored on EU-based servers (Supabase, hosted in Frankfurt, Germany).
+      Digital Invitations data is stored in a Cloudflare D1 database restricted to the EU; guests&rsquo; replies are additionally encrypted.
       We use encryption in transit (HTTPS/TLS) and at rest where applicable.
     </p>
 
